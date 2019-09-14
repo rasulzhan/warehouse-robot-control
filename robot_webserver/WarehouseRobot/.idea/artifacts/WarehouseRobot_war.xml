@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" build-on-make="true" name="WarehouseRobot:war">
+    <output-path>$PROJECT_DIR$/out/artifacts/WarehouseRobot_war</output-path>
+    <root id="archive" name="WarehouseRobot_war.war">
+      <element id="artifact" artifact-name="WarehouseRobot:war exploded" />
+    </root>
+  </artifact>
+</component>

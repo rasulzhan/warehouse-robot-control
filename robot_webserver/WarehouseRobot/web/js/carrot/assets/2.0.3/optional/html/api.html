@@ -1,0 +1,2017 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Carrot Search FoamTree - Programmer's Reference</title><link rel="stylesheet" type="text/css" href="../css/sh/sh.css"/><link rel="stylesheet" type="text/css" href="../css/common.css"/><link rel="stylesheet" type="text/css" href="../css/documentation.css"/><style type="text/css" xml:space="preserve">
+      
+      h1.title > em.brand { background-image: url(../img/foamtree-logo-white.png) !important; }
+    
+    </style><meta name="viewport" id="meta" content="width=760px"/><meta name="description" content="Programmer's Reference for Carrot Search FoamTree visualization. FoamTree is a HTML5 tree map visualization with innovative physics-inspired layout algorithms and animations. "/></head><body class="dark panel no-x-scroll"><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-317750-2']);
+      _gaq.push(['_trackPageview']);
+    
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+      })();//]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+    
+      var foamtree;
+      try {
+        foamtree = window.parent.foamtree;
+      } catch (e) {
+         // ignored
+      }
+      if (!foamtree) {
+        document.body.setAttribute("class", "standalone panel no-x-scroll");
+      }
+    
+    //]]></script><div><a href="api.html" rel="_blank" id="new-window" shape="rect">Open in new window</a></div><h1 class="title"><em class="brand">Carrot Search HTML5 FoamTree</em> Programmer's Reference</h1><p>
+      This is the programmer's reference for <em class="brand">Carrot Search HTML5 FoamTree</em>
+      introducing the general concepts, code examples covering common use cases and a detailed
+      reference of the API methods, options and events.
+    </p><div id="toc"><div class="toc1"><a href="#" shape="rect">Introduction</a>:
+      <a href="#browser-support" shape="rect">Browser support</a> | <a href="#releases" shape="rect">Release history</a></div><div class="toc1"><a href="#api-overview" shape="rect">API overview</a>:
+      <a href="#options-introduction" shape="rect">Options</a> | <a href="#data-format" shape="rect">Data format</a> | <a href="#colors" shape="rect">Colors</a> | <a href="#resizing" shape="rect">Resizing</a> | <a href="#printing" shape="rect">Printing</a> | <a href="#html5-vs-flash" shape="rect">FoamTree HTML5 vs. FoamTree Flash</a></div><div class="toc1"><a href="#code-examples" shape="rect">Code examples</a>:
+      <a href="#checking-support" shape="rect">Checking support</a> | <a href="#embedding" shape="rect">Embedding</a> | <a href="#loading-new-data-set" shape="rect">Loading a new data set</a> | <a href="#loading-data-set-from-remote-server" shape="rect">Loading and converting data from a remote server</a> | <a href="#converting-carrot2-json" shape="rect">Converting Carrot2 JSON format</a> | <a href="#loading-empty-data-set" shape="rect">Loading an empty data set</a> | <a href="#customizing-attribution-group" shape="rect">Customizing the attribution group</a> | <a href="#disabling-attribution-group" shape="rect">Disabling the attribution group</a> | <a href="#customizing-rainbow-colors" shape="rect">Customizing the rainbow colors</a> | <a href="#custom-color-model" shape="rect">Custom color models</a> | <a href="#animating-custom-color-model" shape="rect">Animating custom color model</a> | <a href="#custom-label-text" shape="rect">Custom label text</a> | <a href="#custom-title-bar-text" shape="rect">Custom title bar text</a> | <a href="#listening-to-events" shape="rect">Listening to events</a> | <a href="#changing-event-mappings" shape="rect">Changing event mappings</a> | <a href="#changing-selection" shape="rect">Changing selection</a> | <a href="#getting-current-selection" shape="rect">Getting current selection</a> | <a href="#opening-closing-groups" shape="rect">Opening/ closing groups</a> | <a href="#resizing-listeners" shape="rect">Resizing the visualization</a> | <a href="#getting-visualization-image-data" shape="rect">Getting visualization image data</a> | <a href="#enabling-debug-logging" shape="rect">Enabling debug logging</a></div><div class="toc1"><a href="#" shape="rect">API Reference</a>:
+      <a href="#methods" shape="rect">Methods</a> | <a href="#options" shape="rect">Options</a> | <a href="#events" shape="rect">Events</a></div></div><div class="folded"><h1>Introduction</h1><p>
+        FoamTree is an HTML5 application, all modern desktop and mobile browsers supporting the
+        canvas specification will be able to display the visualization. FoamTree can be
+        integrated into a HTML page using a simple JavaScript API.
+      </p><h2 id="browser-support">Browser support</h2><p>
+        FoamTree is supported on the following browsers:
+      </p><ul><li>Chrome: two latest versions</li><li>Firefox: two latest versions</li><li>Internet Explorer: version 9 and later</li><li>Mac OS Safari: version 5 and later</li><li>iOS Safari: version 4.2 and later</li></ul><p>
+        FoamTree will most likely also work on other modern browsers, such as Opera, though
+        support for these browsers is not a priority.
+      </p><p>
+        If there is a need to display FoamTree on older browsers, Flash version of
+        FoamTree can serve as a fallback.
+      </p><h2 id="releases">Release history</h2><h3 id="release-2.0.3">FoamTree 2.0.3 <small>(released on 06.03.2013)</small></h3><h4>Improvements</h4><ul><li>
+          A number of events have been added to make it possible to <a href="#changing-event-mappings" shape="rect">change the default user interaction mappings</a>,
+          such as selecting groups on an event other than single mouse click.
+        </li></ul><h4>Bug fixes</h4><ul><li>
+          A JavaScript error would be thrown when setting or getting unknown
+          option. Release 2.0.3 fixes this issue and logs the appropriate warning
+          to the browser console.
+        </li></ul><h3 id="release-2.0.2">FoamTree 2.0.2 <small>(released on 16.01.2013)</small></h3><h4>Improvements</h4><ul><li>
+          The <tt><a href="api.html#option-groupWeightScaling" shape="rect">groupWeightScaling</a></tt> option has been added to influence
+          the relative sizes of group polygons.
+        </li><li>
+          Versions prior to 2.0.2 would not draw selection outline when <tt><a href="api.html#option-groupBorderWidth" shape="rect">groupBorderWidth</a></tt>
+          was smaller than 2. Version 2.0.2 draws selection outline for all group border widths.
+        </li></ul><h4>Bug fixes</h4><ul><li>
+          Pinch-in and -out gestures would not always open/close the desired group
+          when the FoamTree HTML element was absolutely positioned. Release 2.0.2 fixes this issue.
+        </li><li>
+          When a number of groups had the same weight, FoamTree might needlessly change
+          the layout of polygons during redraw. As of release 2.0.2 the layout remains
+          stable if the size of the visualization is not changing.
+        </li><li>
+          The <tt><a href="api.html#event-onRedraw" shape="rect">onRedraw</a></tt> callback would not be called after new data set was loaded.
+          Release 2.0.2 fixes this problem.
+        </li><li>
+          Options object passed to the <tt><a href="api.html#method-set" shape="rect">set</a></tt> method could get modified by FoamTree.
+          Release 2.0.2 will not modify objects passed to the <tt><a href="api.html#method-set" shape="rect">set</a></tt> method.
+        </li><li>
+          Options objects passed to the decorator callbacks, such as <tt><a href="api.html#option-groupColorDecorator" shape="rect">groupColorDecorator</a></tt>
+          contained obfuscated option names. As of release 2.0.2, the callbacks will
+          receive options object with original option names.
+        </li><li>
+          Color variables in decorator callbacks, such as <tt><a href="api.html#option-groupColorDecorator" shape="rect">groupColorDecorator</a></tt>,
+          now support CSS3 color strings in hex, hsl, hsla, rgb and rgba models in addition
+          to the object-based color specification.
+        </li><li>
+          On Mac OS, ⌘+click brings up context menu instead of adding new
+          groups to the current selection. Release 2.0.2 fixes this issue.
+        </li><li>
+          The <tt>group</tt> property was undefined in <tt><a href="api.html#option-groupLabelDecorator" shape="rect">groupLabelDecorator</a></tt> for
+          the attribution group. Release 2.0.2 returns the <tt>{ attribution: true }</tt>
+          object in that property.
+        </li></ul><h4>Deprecations</h4><ul><li>
+          As of version 2.1.0, the property in which the <tt><a href="api.html#event-onGroupSelectionChanged" shape="rect">onGroupSelectionChanged</a></tt>
+          event exposes the selected groups will be renamed from <tt>selectedGroups</tt>
+          to <tt>groups</tt>. Throughout 2.0.x line, the deprecated property
+          <tt>selectedGroups</tt> will be maintained as an alias in addition to the
+          new property.
+        </li><li>
+          As of version 2.1.0, the <tt>labelColor</tt> variable affecting group label color
+          will be moved from <tt><a href="api.html#option-groupLabelDecorator" shape="rect">groupLabelDecorator</a></tt> to <tt><a href="api.html#option-groupColorDecorator" shape="rect">groupColorDecorator</a></tt>.
+          To allow rapid migration and to preserve compatibility, the 2.0.x line will handle
+          <tt>labelColor</tt> changes both in <tt><a href="api.html#option-groupLabelDecorator" shape="rect">groupLabelDecorator</a></tt> and
+          <tt><a href="api.html#option-groupColorDecorator" shape="rect">groupColorDecorator</a></tt>.
+        </li></ul><h3 id="release-2.0.1">FoamTree 2.0.1 <small>(released on 08.08.2012)</small></h3><h4>Improvements</h4><ul><li>
+          The 2.0.1 release introduces support for high-density screens, such
+          as Retina. You can use the <tt><a href="api.html#option-pixelRatio" shape="rect">pixelRatio</a></tt> option to set the
+          physical-to-display pixel ratio FoamTree should assume.
+        </li><li>
+          As of the 2.0.1 release, group <tt>weight</tt>s become optional
+          in the <a href="#option-dataObject" shape="rect"><tt><a href="api.html#option-dataObject" shape="rect">dataObject</a></tt></a> specification.
+          Groups with unspecified weights will be assumed to have the weight equal to <tt>1.0</tt>.
+        </li></ul><h4>Bug fixes</h4><ul><li>
+          Opening a group by double click would change the selection state of the group being open.
+          Release 2.0.1 fixes this issue.
+        </li><li>
+          Adding a CSS border to the FoamTree container element might create a blurry
+          visualization image. Release 2.0.1 fixes this issue.
+        </li><li>
+          FoamTree optimized rendering routines would produce incorrect results on
+          certain mobile devices, most likely caused by the browser bugs. Until the bugs get
+          fixed, as of version 2.0.1 FoamTree defaults to slower but correct rendering
+          routines on those devices. Please see the
+          <a href="#option-useFastRenderingRoutines" shape="rect"><tt><a href="api.html#option-useFastRenderingRoutines" shape="rect">useFastRenderingRoutines</a></tt></a>
+          option for more details.
+        </li><li>
+          In certain cases the initial layout generated by FoamTree might be unstable
+          and change after the first call to <tt><a href="api.html#method-redraw" shape="rect">redraw</a></tt>. Version 2.0.1 fixes the issue.
+        </li><li>
+          FoamTree would not redraw groups without <tt><a href="api.html#option-id" shape="rect">id</a></tt>s on programmatic
+          changes of selection and expansion. Version 2.0.1 fixes the issue.
+        </li><li>
+          FoamTree would throw a JavaScript error when selection is programmatically
+          changed immediately after a new data model has been set. Version 2.0.1 fixes the
+          issue.
+        </li></ul><h3 id="release-2.0.0">FoamTree 2.0.0 <small>(released on 25.06.2012)</small></h3><p>
+        Initial FoamTree HTML5 release.
+      </p></div><div class="folded"><h1 id="api-overview">API overview</h1><p><em class="brand">Carrot Search HTML5 FoamTree</em> JavaScript API, contained in the
+        <tt>carrotsearch.foamtree.html5.min.js</tt> file, handles all your code's interactions
+        with the visualization, including embedding, changing
+        various properties, loading new data and listening to events.
+        The entry point to the API is an instance of the <tt>CarrotSearchFoamTree</tt>
+        class created during embedding.
+      </p><h2 id="options-introduction">Options</h2><p>
+        After embedding, all further interaction with the visualization is based around
+        changing options that control such aspects as the current data model,
+        colors, font sizes and event listeners. Options can be changed using the
+        <tt><a href="api.html#method-set" shape="rect">set</a></tt> method as shown in the code examples.
+      </p><p>
+        You can use the <a href="settings.html" shape="rect">settings panel</a> to tune the visual
+        options to match your design. Then, you can copy the current option values in
+        the JavaScript format from the <strong>Options as JavaScript</strong> section
+        directly to your code.
+      </p><h2 id="data-format">Data format</h2><p>
+        Input data passed to <em class="brand">FoamTree</em> need to be as a JavaScript
+        object defining the whole hierarchy of groups and their properties. Please see
+        the <tt><a href="api.html#option-dataObject" shape="rect">dataObject</a></tt> option for detailed documentation and examples.
+      </p><h2 id="colors">Colors</h2><p>
+        Many options of <em class="brand">FoamTree</em> involve specifying
+        colors, such as the global background color, colors of specific groups and
+        labels. In all such cases, FoamTree accepts CSS3-compliant color strings, such as:
+        <tt>#fff</tt>, <tt>#1d1d1d</tt>, <tt>rgba(200, 100, 0, 0.5)</tt>,
+        <tt>hsla(120, 50, 50, 0.8)</tt>.
+      </p><h2 id="resizing">Resizing</h2><p>
+        In case the <em class="brand">FoamTree</em> HTML element changes its size, either
+        as part of flexible layout or programmatically, the visualization needs
+        to be resized and redrawn explicitly using the <tt><a href="api.html#method-resize" shape="rect">resize</a></tt> method.
+        Please see the code examples section for code handling the most
+        typical resizing scenarios.
+      </p><h2 id="printing">Printing</h2><p>
+        FoamTree is a regular printable element of the page. You may want to
+        customize the printing style sheets to hide non-relevant elements.
+      </p><h2 id="html5-vs-flash">FoamTree HTML5 vs. FoamTree Flash</h2><p>
+        While both version produce similarly-looking results and use the same
+        top-level JavaScript API, the HTML5 version is not a drop-in replacement
+        of FoamTree Flash. Below is the summary of key similarities and differences.
+      </p><p>
+        Similarities:
+      </p><ul><li><strong>General visual layout</strong>: both versions display the
+          input data in the form of a hierarchical non-rectangular tree map.
+        </li><li><strong>Top-level JavaScript API</strong>: both versions use the same
+          general JavaScript API based around embedding the visualization into the
+          page, setting specific options and listening to events.
+        </li></ul><p>
+        Differences:
+      </p><ul><li><strong>Mobile devices</strong>: unlike the Flash version, the HTML5 release
+          should work on the majority of modern mobile devices.
+        </li><li><strong>Browser support</strong>: the HTML5 version requires a modern browser
+          (most notably, Internet Explorer 9 or later), while the Flash version will also
+          work on older browsers.
+        </li><li><strong>Tree map implementation details</strong>: the HTML5 and Flash versions
+          use different strategies to build the tree map visualizations. As a result,
+          while generally similar, the tree map layouts they produce look differently.
+        </li><li><strong>Different input data formats</strong>: the HTML5 version accepts
+          input data only in the form of JavaScript objects. Unlike with the Flash version,
+          fetching of the data from an external server is the responsibility of
+          the embedding application.
+        </li><li><strong>Different options and data types</strong>: the HTML5 version puts more
+          emphasis on reusing the natural HTML data types and formats, such as JavaScript objects
+          and CSS3-compliant color specifications. For example, multi-parameter callbacks
+          known from the Flash version have been replaced with structured JavaScript objects.
+        </li><li><strong>Support and new features</strong>: while the Flash version will continue
+          receiving bug fixes, most new features will appear only in the HTML5 version.
+        </li></ul><p>
+        Migration from the Flash to HTML5 version of FoamTree will include the following steps:
+      </p><ol><li><strong>Switching the data format from XML to JSON</strong>. Please see the
+          <tt><a href="api.html#option-dataObject" shape="rect">dataObject</a></tt> option documentation for details and examples.
+        </li><li><strong>Loading data from external servers</strong>. If the Flash version
+          fetched XML data from external servers, the migration will need to make sure
+          the same data is fetched in the JSON format and passed to HTML5 FoamTree.
+          Many popular JavaScript libraries, such as jQuery, provide excellent support for
+          Ajax-based fetching of JSON and JSON-P data.
+        </li><li><strong>Tuning of visual properties</strong>. To complete the migration, 
+          certain options (such as colors) may need to be tuned to make the visualization
+          look similar to the original Flash version. This may be a good opportunity
+          to try new options that were unavailable in the Flash version, such as customizing
+          the <a href="#option-groupFontFamily" shape="rect">font used for drawing the group labels</a>.
+          The easiest way to tune the visual options is to experiment with the
+          <a href="settings.html" shape="rect">settings panel</a>.
+        </li></ol></div><div class="folded"><h1 id="code-examples">Code examples</h1><h2 id="checking-support">Checking support</h2><p>
+        You can check whether the current browser supports FoamTree by reading
+        the static <tt><a href="api.html#option-supported" shape="rect">supported</a></tt> variable of the <tt>CarrotSearchFoamTree</tt>
+        class:
+      </p><pre class="brush: js" xml:space="preserve">
+console.log(CarrotSearchFoamTree.supported);
+</pre><a id="N65972" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h2 id="embedding">Embedding</h2><p>
+        The following code embeds Carrot Search FoamTree HTML5.
+      </p><pre class="brush: js" xml:space="preserve">
+      &lt;!-- The element to contain FoamTree --&gt;
+      &lt;div id="visualization"&gt;&lt;/div&gt;
+
+      &lt;!-- Link the required JavaScripts --&gt;
+      &lt;script src="assets/2.0.3/required/js/carrotsearch.foamtree.html5.min.js"&gt;&lt;/script&gt;
+
+      &lt;!-- Embed visualization --&gt;
+      &lt;script&gt;//&lt;![CDATA[
+        // Your data object. It will usually be loaded
+        // from a remote server, but we'll use static
+        // data for the sake of example.
+        var dataObject = { groups: [
+          { label: "Group 1", weight: 3, groups: [
+            { label: "Group 1.1", weight: 2 },
+            { label: "Group 1.2", weight: 1 } ] },
+          { label: "Group 2", weight: 1 }
+        ] };
+
+        var foamtree = new CarrotSearchFoamTree({
+          // Identifier of the DOM element
+          // into which to embed FoamTree
+          id: "visualization",
+
+          // URL of the JSON with documents and clusters
+          // to display in the visualization.
+          dataObject: dataObject
+
+          // Other options can be set during embedding
+          // as well. Here we set the border width to 8
+          borderWidth: 8,
+
+          // Group selection listener
+          onGroupSelectionChanged: function(info) {
+            alert(info.groups.length
+              + " group(s) selected");
+          }
+        });
+      //]]&gt;&lt;/script&gt;
+  </pre><p>
+        The embedding is performed in 3 basic steps:
+      </p><ol><li><strong>Define an HTML element to contain the visualization.</strong> The element must have
+          an <tt><a href="api.html#option-id" shape="rect">id</a></tt> and non-zero width and height. Please see the <a href="../../../../index.html#index-source" shape="rect">source
+          code of <tt>index.html</tt></a> for a layout that dynamically resizes the visualization to fit
+          the current browser window.
+        </li><li><strong>Link the required JavaScript</strong>. The only required file is
+          <tt>carrotsearch.foamtree.html5.min.js</tt>.
+        </li><li><p><strong>Embed the visualization</strong>. The visualization is embedded by
+            creating an instance of <tt>CarrotSearchFoamTree</tt> with the desired options,
+            including the <tt><a href="api.html#option-id" shape="rect">id</a></tt> of the HTML element defined in step 1.
+          </p><p>
+            If you would like to customize the visual appearance of the visualization
+            or provide event listeners, you can add them as additional options.
+          </p><p>
+            The reference to the created instance (the <tt>foamtree</tt> variable) can be further used to load
+            new data or change settings of the visualization. The instance is ready
+            to handle method calls as soon as the constructor invocation returns.
+            Please see the reference for a list of available methods and options.
+          </p></li></ol><p>
+        Please see the <a href="../../../../index.html#index-source" shape="rect">source code of <tt>index.html</tt></a>
+        for a complete setup.
+      </p><h2 id="loading-new-data-set">Loading a new data set</h2><pre class="brush: js" xml:space="preserve">
+foamtree.set("dataObject", { groups: [
+  { label: "Group 1", weight: 3, groups: [
+    { label: "Group 1.1", weight: 2 },
+    { label: "Group 1.2", weight: 1 } ] },
+  { label: "Group 2", weight: 1 }
+] });
+</pre><a id="N66039" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h2 id="loading-data-set-from-remote-server">Loading and converting data from a remote server</h2><p>
+        In this example we'll load data from USA Today API, convert
+        it to FoamTree format and visualize. We use jQuery to make
+        Ajax requests, but any other library should work equally
+        well.
+      </p><pre class="brush: js" xml:space="preserve">
+$.ajax({
+  url: "http://api.usatoday.com/open/census/loc?api_key=nqjr52fpvsu8gs97tgnkyzfx",
+  dataType: "jsonp",
+  jsonpCallback: "callback",
+  success: function(data) {
+    var groups = [ ];
+    var states = data.response;
+    var pow = 0.7;
+    for (var i = 0; i &lt; states.length; i++) {
+      var s = states[i];
+      groups.push({
+        label: s.Placename,
+        weight: s.Pop,
+        groups: [
+          // Ethnic data is very varied, we rise it
+          // to the power of 0.8 to make the
+          // differences less pronounced.
+          { label: "Hispanic",
+            weight: Math.pow(s.PctHisp, pow) },
+          { label: "White",
+            weight: Math.pow(s.PctNonHispWhite, pow) },
+          { label: "Black",
+            weight: Math.pow(s.PctBlack, pow) },
+          { label: "Indian",
+            weight: Math.pow(s.PctAmInd, pow) },
+          { label: "Asian",
+            weight: Math.pow(s.PctAsian, pow) },
+          { label: "Hawaiian",
+            weight: Math.pow(s.PctNatHawOth, pow) }
+        ]
+      })
+    }
+    foamtree.set("dataObject", { groups: groups });
+  }
+});
+</pre><a id="N66048" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h2 id="converting-carrot2-json">Converting Carrot2 JSON format</h2><p>
+        If you're using Carrot2/Lingo3G clustering engine,
+        you can convert Carrot2 JSON format to visualization data object format using
+        the following code (requires <a target="_blank" href="http://underscorejs.org" shape="rect">underscore.js</a>).
+      </p><pre class="brush: js" xml:space="preserve">
+var dataObject = {
+  groups: _.reduce(carrot2Json.clusters,
+    function reducer(arr, cluster) {
+      arr.push({
+        id: cluster.id,
+        weight: cluster.attributes &amp;&amp;
+          cluster.attributes["other-topics"] ?
+          0 : cluster.size,
+        label: cluster.phrases[0],
+        groups: _.reduce(cluster.clusters || [],
+          reducer, []),
+        cluster: cluster
+      });
+      return arr;
+    }, []);
+ };
+</pre><p>
+        The Carrot2 XML format is not supported by HTML5 visualizations directly
+        but it can be easily converted to JSON, as shown in this code (requires
+        jQuery):
+      </p><pre class="brush: js" xml:space="preserve">
+$.ajax({
+  url: "../../../../data/legacy.xml",
+  dataType: "xml",
+  success: function(data) {
+    // Converts any "group" XML elements
+    // under node to their JSON counterparts
+    // for the visualization. Recursive.
+    function convert($node) {
+      var result = {};
+      var $titles = $node.children("title");
+      if ($titles.length &gt; 0) {
+        result.label = $titles.children("phrase").text();
+      }
+      if ($node.attr("score")) {
+        result.score = $node.attr("score");
+      }
+      if ($node.attr("id")) {
+        result.id = $node.attr("id");
+      }
+      var $subgroups = $node.children("group");
+      if ($subgroups.length &gt; 0) {
+        result.groups = $subgroups.map(function(i, group) {
+          return convert($(group));
+        }).get();
+      }
+      return result;
+    }
+
+    // Use jquery for traversals to make it simpler.
+    circles.set("dataObject",
+      convert($(data).children("searchresult")));
+  }
+});
+</pre><a id="N66069" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h2 id="loading-empty-data-set">Loading an empty data set</h2><pre class="brush: js" xml:space="preserve">
+foamtree.set("dataObject", null);
+</pre><a id="N66076" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h2 id="customizing-attribution-group">Customizing the attribution group</h2><p>
+        You can customize or disable the attribution group by changing
+        the <tt><a href="api.html#option-attributionText" shape="rect">attributionText</a></tt> and <tt><a href="api.html#option-attributionLogo" shape="rect">attributionLogo</a></tt> options.
+      </p><p><strong>Note</strong>: The limited demo version of FoamTree does not
+        allow to disable or change the attribution group. Please
+        <a rel="_blank" href="http://carrotsearch.com/foamtree-how-to-order" shape="rect">contact Carrot
+        Search</a> for licensing of a fully customizable distribution.
+      </p><pre class="brush: js" xml:space="preserve">
+foamtree.set({
+  attributionText: "Ingenious!",
+  attributionLogo: "data:image/png;base64,\
+iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/\
+9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdh\
+cmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAKgSURBVD\
+jLlZLrS1NxGMd90ZvovdEfEBEUEhZIb0xMjdyLIuyG\
+kiHGUFKydFKKJiRegjIyFJRwojMxzfJSaVOYeTfxtp\
+SNuZ1tXnY2z27nsss5334uWloG9uLD7/A7z/fzPPx4\
+IgBE7ISl3qWyelUvu9JIueZqeOdUmcCMFDgcQ3fntj\
+SK0j/rwx+csesIZ3jbL1j6EbCPIej5DpE3QRIoBJ3L\
+EFb74BjIxkbXVYNdrTixS8Ca3h/y6pSTfloD0UcRjC\
+S8BJGbRdA7QRgjd1pIfhruyeewKOMdm+rCw2GBV1tX\
+KZh7SIEVoqAjpwVS0AlIvhBSkCGyeQRcPYDogO1DNi\
+xvrveFBa6ZCkuAmSe1OtJpFVLATkJboWCIAE3+GYng\
+I6ENgnUK+hcxfFiw9fWRT+RWEWTHEeRmyPhaMvYCgu\
+5ZEpgkbzCCgPszBNsr8NY8iF4Ky5WnpLDArs41+zYn\
+SPdF8OYi0qEcTHc6mF45mJ4M2Ftl4C1lYPU34KerwF\
+NTWKmO/j2BfbiwghmvJuPawZsUsNVHgTPlEx6ANcjJ\
+eR9r5QfhWUqEJOlhbc+FoV42FBY4R0sPbPbKlz2LLe\
+QB9aCbYkJhzpIFlkoDZ8zDRk0kRHYYrm8d0JYeEyyd\
+uUd37QH9pTBqvSOV9iy0wtmZ+VNAOm+HOeM92JtlYD\
+QN0JYcD1BtmTf/WqRtbJ/yTxtUt9fXGhPBq5MhriVB\
+tMYhoLkMQ1Ek5sqi3eb2O4l7buIvhlRPkmsfZ/ibax\
++iruosnpacQUFOOq7Fn5TUypJz/1zlnRQr5JSypRVK\
+ZRvq6htR/ewlriTH03vV7ilQ5NwaHRgchM1GY3p6Bq\
++bmpEii9XtWzCgqkhLuXSBTUg4L8XFxUoXk2K57obi\
+rH0L/ocfNQ8V8wE+uE0AAAAASUVORK5CYII="
+});
+foamtree.redraw();
+</pre><a id="N66101" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h2 id="disabling-attribution-group">Disabling the attribution group</h2><pre class="brush: js" xml:space="preserve">
+foamtree.set({
+  attributionText: null,
+  attributionLogo: null
+});
+foamtree.redraw();
+</pre><a id="N66108" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h2 id="customizing-rainbow-colors">Customizing the rainbow colors</h2><p>
+        By default, colors of of the groups come from a full red-to-purple
+        rainbow. To change the colors and transparency of the rainbow, set
+        the <tt><a href="api.html#option-rainbowStartColor" shape="rect">rainbowStartColor</a></tt> and <tt><a href="api.html#option-rainbowEndColor" shape="rect">rainbowEndColor</a></tt> options
+        to the desired colors.
+      </p><pre class="brush: js" xml:space="preserve">
+foamtree.set({
+  rainbowStartColor: "hsla(120, 100%, 50%, 0.8)",
+  rainbowEndColor: "hsla(270, 100%, 50%, 0.2)",
+  groupColorDecorator: null
+});
+foamtree.redraw();
+</pre><a id="N66123" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h2 id="custom-color-model">Custom color models</h2><p>
+        To color groups in an arbitrary way, you can use the
+        <tt><a href="api.html#option-groupColorDecorator" shape="rect">groupColorDecorator</a></tt> option. The example below
+        mixes colors based on the coordinates of group centers.
+      </p><pre class="brush: js" xml:space="preserve">
+var vis = window.parent.document
+  .getElementById(foamtree.get("id"));
+var width = vis.clientWidth,
+    height = vis.clientHeight;
+
+foamtree.set("groupColorDecorator",
+  function(opts, params, vars) {
+    var red = Math.round(255 *
+      (1 - params.polygonCenterX / width));
+    var green = Math.round(255 *
+      (1 - params.polygonCenterY / height));
+    vars.groupColor.model = "rgb";
+    vars.groupColor.r = red;
+    vars.groupColor.g = green;
+    vars.groupColor.b = 32;
+    vars.groupColor.a = 0.8;
+    vars.labelColor = "auto";
+  });
+foamtree.redraw();
+</pre><a id="N66135" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><p>
+        The following example colors groups with alternating black
+        and white colors. Note how label color is set to
+        "auto" to have FoamTree automatically calculate
+        the best color for the label.
+      </p><pre class="brush: js" xml:space="preserve">
+var cnt = 0;
+foamtree.set("groupColorDecorator",
+  function(opts, params, vars) {
+    var odd = (cnt++ % 2) == 0;
+    vars.groupColor.model = "rgb";
+    vars.groupColor.r = odd ? 255 : 0;
+    vars.groupColor.g = odd ? 255 : 0;
+    vars.groupColor.b = odd ? 255 : 0;
+    vars.groupColor.a = 0.8;
+    vars.labelColor = "auto";
+  });
+foamtree.redraw();
+</pre><a id="N66141" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><p>
+        The following decorator assigns first-level group colors
+        based on a fixed palette of CSS3 color specifications.
+        Note how the decorator modifies colors only for the
+        level=0 groups leaving to FoamTree the task of generating
+        the appropriate variations of the base color for the
+        lower-level groups.
+      </p><pre class="brush: js" xml:space="preserve">
+// Base colors in HSL
+var baseColors = [
+  "hsl(  4.68,  90.59%, 83.33%)",
+  "hsl(207.50,  46.15%, 79.61%)",
+  "hsl(108.95,  48.72%, 84.71%)",
+  "hsl(285.60,  31.65%, 84.51%)",
+  "hsl( 34.77,  97.78%, 82.35%)",
+  "hsl( 60.00, 100.00%, 90.00%)",
+  "hsl( 40.50,  43.48%, 81.96%)",
+  "hsl(329.14,  89.74%, 92.35%)"
+];
+foamtree.set("groupColorDecorator",
+  function(opts, params, vars) {
+    if (params.level != 0) {
+      // Leave the generation of lower-level
+      // colors to FoamTree.
+      return;
+    }
+    vars.groupColor = baseColors[
+      params.index % baseColors.length];
+    vars.labelColor = "auto";
+  });
+foamtree.redraw();
+</pre><a id="N66147" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h2 id="animating-custom-color-model">Animating custom color model</h2><p>
+        You can animate group colors by making the <tt><a href="api.html#option-groupColorDecorator" shape="rect">groupColorDecorator</a></tt>
+        function time-dependant and by refreshing the visualization periodically.
+        The example below shifts the hue of the group's color based on the frame
+        number.
+      </p><pre class="brush: js" xml:space="preserve">
+var frame = 0;
+foamtree.set("groupColorDecorator", function(opts, params, vars) {
+  vars.groupColor.h = (vars.groupColor.h + frame) % 360;
+  vars.labelColor = "auto";
+});
+
+// Redraw the visualization periodically.
+// Although we use setTimeout() here, use
+// the requestAnimationFrame() when possible.
+setTimeout(function redraw() {
+  if (frame &gt; 360) { // stop after a while
+    frame = 0;
+    return;
+  }
+  foamtree.redraw();
+  frame += 5;
+  setTimeout(redraw, 16); // next frame
+}, 16);
+</pre><a id="N66159" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h2 id="custom-label-text">Custom label text</h2><p>
+        You can use the <tt><a href="api.html#option-groupLabelDecorator" shape="rect">groupLabelDecorator</a></tt> option to customize
+        the text of group labels. The example below appends
+        the weight of the group to the group's label.
+      </p><pre class="brush: js" xml:space="preserve">
+foamtree.set("groupLabelDecorator", function(opts, params, vars) {
+  vars.labelText += " (" +
+    params.group.weight + ")";
+});
+foamtree.redraw();
+</pre><a id="N66171" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h2 id="custom-title-bar-text">Custom title bar text</h2><p>
+        You can use the <tt><a href="api.html#option-titleBarDecorator" shape="rect">titleBarDecorator</a></tt> option to customize
+        the text and color of group labels displayed in the title bar.
+        The example below appends the weight of the group to the
+        group's label displayed in the title bar.
+      </p><pre class="brush: js" xml:space="preserve">
+foamtree.set("titleBarDecorator", function(opts, params, vars) {
+  vars.titleBarText += " (" +
+    params.group.weight + ")";
+
+  // Additionally, display in red
+  vars.titleBarTextColor = {
+    model: "rgb",
+    r: 255, g: 0, b: 0
+  };
+});
+</pre><a id="N66183" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h2 id="listening-to-events">Listening to events</h2><p>
+        You can register handlers for a number of event types triggered
+        during the life cycle of the visualization. In each callback,
+        <tt>this</tt> points to the <tt>CarrotSearchFoamTree</tt> instance involved.
+      </p><pre class="brush: js" xml:space="preserve">
+foamtree.set({
+  onGroupHover: function (info) {
+    console.log("onGroupHover", info.group);
+  },
+
+  onGroupOpenOrClose: function (info) {
+    console.log("onGroupOpenOrClose",
+      info.group);
+  },
+
+  onGroupSelectionChanged: function (info) {
+    console.log("onGroupSelectionChanged",
+      info.groups);
+  }
+});
+</pre><a id="N66198" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h2 id="changing-event-mappings">Changing event mappings</h2><p>
+        You can use the <tt><a href="api.html#event-onBeforeSelection" shape="rect">onBeforeSelection</a></tt>, <tt><a href="api.html#event-onBeforeOpenOrClose" shape="rect">onBeforeOpenOrClose</a></tt>,
+        <tt><a href="api.html#event-onGroupClick" shape="rect">onGroupClick</a></tt>, <tt><a href="api.html#event-onGroupDoubleClick" shape="rect">onGroupDoubleClick</a></tt> and <tt><a href="api.html#event-onGroupHold" shape="rect">onGroupHold</a></tt>
+        events to change the default mapping between user interactions (e.g. click)
+        and FoamTree responses (e.g. group selection).
+      </p><p>
+        The general approach is to cancel the default actions by returning <tt>false</tt>
+        from the <tt><a href="api.html#event-onBeforeSelection" shape="rect">onBeforeSelection</a></tt> and/or <tt><a href="api.html#event-onBeforeOpenOrClose" shape="rect">onBeforeOpenOrClose</a></tt> event
+        handlers and then performing the desired actions from the low-level event handlers,
+        such as <tt><a href="api.html#event-onGroupDoubleClick" shape="rect">onGroupDoubleClick</a></tt>.
+      </p><p>
+        The example below changes the mapping in such a way that the user needs
+        to double-click a group to select or unselect it.
+      </p><pre class="brush: js" xml:space="preserve">
+foamtree.set({
+  onBeforeSelection: function() {
+    // Cancel the default action
+    return false;
+  },
+  onGroupDoubleClick: function(info) {
+    if (info.topmostClosedGroup) {
+      var selection = this.get("selection").groups;
+
+      // Clear previous selection
+      this.set("selection",
+        { all: true, selected: false });
+
+      // If group was previously unselected,
+      // select it.
+      if (selection.indexOf(info.topmostClosedGroup) &lt; 0) {
+        this.set("selection",
+          info.topmostClosedGroup.id);
+      }
+    }
+  }
+});
+</pre><a id="N66238" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h2 id="changing-selection">Changing selection</h2><p>
+        To change the current group selection, set the <tt><a href="api.html#option-selection" shape="rect">selection</a></tt> option. A number
+        of selection formats are possible. For programmatic group selection to work,
+        group data objects need to define the <tt><a href="api.html#option-id" shape="rect">id</a></tt> property, which the
+        <tt><a href="api.html#option-selection" shape="rect">selection</a></tt> option values will refer to.
+      </p><h3>Selecting a single group</h3><pre class="brush: js" xml:space="preserve">
+foamtree.set("selection", "0");  // group id
+</pre><a id="N66258" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h3>Selecting multiple groups</h3><pre class="brush: js" xml:space="preserve">
+foamtree.set("selection", ["2", "3", "4"]);
+</pre><a id="N66264" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h3>Deselecting multiple groups</h3><pre class="brush: js" xml:space="preserve">
+foamtree.set("selection", {
+  groups: ["1", "2", "3"],
+  selected: false
+});
+</pre><a id="N66270" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h3>Clearing selection</h3><pre class="brush: js" xml:space="preserve">
+foamtree.set("selection", { all: true, selected: false });
+</pre><a id="N66276" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h2 id="getting-current-selection">Getting current selection</h2><p>
+        You can obtain the current cluster selection by getting the
+        <tt><a href="api.html#option-selection" shape="rect">selection</a></tt> property.
+      </p><pre class="brush: js" xml:space="preserve">
+console.log(foamtree.get("selection"));
+</pre><a id="N66288" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h2 id="opening-closing-groups">Opening/ closing groups</h2><p>
+        You can open higher level groups to show subgroups or close
+        them to show translucent overlay of sub-groups by changing the
+        <tt><a href="api.html#option-open" shape="rect">open</a></tt> option. The groups to open/close are specified
+        in a way similar to selection changes.
+      </p><pre class="brush: js" xml:space="preserve">
+foamtree.set("open", "0");
+</pre><a id="N66300" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><pre class="brush: js" xml:space="preserve">
+foamtree.set("open", ["11", "19"]);
+</pre><a id="N66304" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><pre class="brush: js" xml:space="preserve">
+foamtree.set("open", { all: true, open: false });
+</pre><a id="N66308" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><pre class="brush: js" xml:space="preserve">
+console.log(foamtree.get("open"));
+</pre><a id="N66312" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h2 id="resizing-listeners">Resizing the visualization</h2><p>
+        If your layout flexibly resizes the visualization container
+        and you'd like the visualization to redraw after the user
+        resizes the browser window, use the code like below.
+      </p><pre class="brush: js" xml:space="preserve">window.addEventListener("resize", (function() {
+  var timeout;
+  return function() {
+    // Throttle resizes at 3 times per second
+    window.clearTimeout(timeout);
+    window.setTimeout(function() {
+      if (window.foamtree) {
+        window.foamtree.resize();
+      }
+    }, 330);
+  };
+})());</pre><p>
+        If you'd like to resize and redraw FoamTree after the orientation
+        of a mobile device changes, use the following code:
+      </p><pre class="brush: js" xml:space="preserve">window.addEventListener("orientationchange", function() {
+  window.foamtree.resize();
+});</pre><h2 id="getting-visualization-image-data">Getting visualization image data</h2><p>
+        You can use the <tt><a href="api.html#option-imageData" shape="rect">imageData</a></tt> option to get the image data
+        of the current visualization as a <a rel="_blank" href="http://en.wikipedia.org/wiki/Data_URI_scheme" shape="rect"><tt>data:</tt> URL</a>.
+      </p><pre class="brush: js" xml:space="preserve">
+console.log(foamtree.get("imageData").substring(0, 100));
+</pre><a id="N66347" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div><h2 id="enabling-debug-logging">Enabling debug logging</h2><p>
+        To enable debug output in the browser's console, set the
+        <tt><a href="api.html#option-logging" shape="rect">logging</a></tt> option to <tt>true</tt>.
+      </p><pre class="brush: js" xml:space="preserve">
+foamtree.set("logging", true);
+</pre><a id="N66362" href="#" class="run" shape="rect">Execute</a><div style="clear: both"><!----></div></div><div class="folded"><h1>API Reference</h1><h2 id="methods">Methods</h2><ul class="api"><a name="method-get" shape="rect"><!----></a><li id="method-get"><dl class="folded"><dt class="name">Name</dt><dd><a href="#method-get" shape="rect">get</a></dd><dt class="sig signature brief">
+      Signature</dt><dd>get()</dd><dt class="sig signature brief extra">
+      Signature</dt><dd>get(option)</dd><dt class="signature full">get()</dt><dd>
+          Returns an object containing current values of all options. Properties
+          of the object correspond to option names, values of the object are option values. 
+        </dd><dt class="signature full">get(option)</dt><dd>
+          Returns the current value of the requested <tt>option</tt>. If the provided
+          string does not correspond to any option name, the result is undefined.
+        </dd></dl></li><a name="method-set" shape="rect"><!----></a><li id="method-set"><dl class="folded"><dt class="name">Name</dt><dd><a href="#method-set" shape="rect">set</a></dd><dt class="sig signature brief">
+      Signature</dt><dd>set(option, value)</dd><dt class="sig signature brief extra">
+      Signature</dt><dd>set(options)</dd><dt class="signature full">set(option, value)</dt><dd>
+          Sets the provided <tt>option</tt> to the desired <tt>value</tt>. If the provided 
+          <tt>option</tt> string does not correspond to any option, the call is ignored. 
+        </dd><dt class="signature full">set(options)</dt><dd>
+          Sets new values for all options included in the provided <tt>options</tt> object.
+          Properties of the object should correspond to option names, values of the object 
+          will be treated as option values to set. Properties of the object that do
+          not correspond to any options of the visualization will be ignored.
+        </dd><dt class="code">Code examples</dt><dd>Setting one option<pre class="brush: js" xml:space="preserve">foamtree.set("backgroundColor", "#000000");</pre>Setting multiple options in one call<pre class="brush: js" xml:space="preserve">foamtree.set({
+  backgroundColor: "#000000",
+  borderWidth: 4,
+  borderRadius: 0.35
+});</pre></dd></dl></li><a name="method-redraw" shape="rect"><!----></a><li id="method-redraw"><dl class="folded"><dt class="name">Name</dt><dd><a href="#method-redraw" shape="rect">redraw</a></dd><dt class="sig signature brief">
+      Signature</dt><dd>redraw()</dd><dt class="signature full single">redraw()</dt><dd>
+          Triggers a complete redraw of the visualization. Redrawing of the visualization
+          can be useful when:
+
+          <ul><li>
+              the visualization needs to be updated after changing appearance-related
+              options, such as <tt><a href="api.html#option-groupBorderWidth" shape="rect">groupBorderWidth</a></tt>.
+            </li><li>
+              using an animated time-dependent color model, which requires periodic redraws
+              of the visualization.
+            </li></ul></dd></dl></li><a name="method-resize" shape="rect"><!----></a><li id="method-resize"><dl class="folded"><dt class="name">Name</dt><dd><a href="#method-resize" shape="rect">resize</a></dd><dt class="sig signature brief">
+      Signature</dt><dd>resize()</dd><dt class="signature full single">resize()</dt><dd>
+          If the size of the visualization HTML element has changed, resizes and
+          redraws the visualization to accommodate to the new size. Please see
+          the code examples section for the most scenarios related to visualization
+          resizing.
+        </dd></dl></li><a name="method-rollout" shape="rect"><!----></a><li id="method-rollout"><dl class="folded"><dt class="name">Name</dt><dd><a href="#method-rollout" shape="rect">rollout</a></dd><dt class="sig signature brief">
+      Signature</dt><dd>rollout()</dd><dt class="signature full single">rollout()</dt><dd>
+          Triggers the animated rollout for the current data set.
+        </dd></dl></li></ul><h2 id="options">Options</h2><h3>Embedding</h3><ul class="api"><a name="option-supported" shape="rect"><!----></a><li id="option-supported"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-supported" shape="rect">supported</a></dd><dt class="sig type">Type</dt><dd>Boolean</dd><dt class="sig extra">Default</dt><dd/><dt class="desc">Description</dt><dd>
+            A static field equal to <tt>true</tt> if FoamTree is supported
+            on the current browser. <strong>Note:</strong> as opposed to other
+            options, this field can only be accessed statically directly
+            from the <tt>CarrotSearchFoamTree</tt> as shown in the examples below.
+          </dd><dt class="code">Code examples</dt><dd>Checking if FoamTree is supported<pre class="brush: js" xml:space="preserve">if (CarrotSearchFoamTree.supported) {
+  // FoamTree supported, embed and enjoy.
+} else {
+  // FoamTree not supported.
+  // Display the appropriate message.
+}</pre></dd></dl></li></ul><ul class="api"><a name="option-id" shape="rect"><!----></a><li id="option-id"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-id" shape="rect">id</a></dd><dt class="sig type">Type</dt><dd>String</dd><dt class="sig extra">Default</dt><dd>null</dd><dt class="desc">Description</dt><dd>
+            Identifier of the DOM element into which the visualization is to
+            be embedded.
+          </dd></dl></li></ul><h3>Data</h3><ul class="api"><a name="option-dataObject" shape="rect"><!----></a><li id="option-dataObject"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-dataObject" shape="rect">dataObject</a></dd><dt class="sig type">Type</dt><dd>Object</dd><dt class="sig extra">Default</dt><dd>null</dd><dt class="desc">Description</dt><dd><p>
+              The data to visualize. The object must contain the
+              <tt>groups</tt> property with an array of objects representing
+              individual groups. Each group can contain the following
+              properties:
+            </p><ul><li><tt><a href="api.html#option-id" shape="rect">id</a></tt>: (optional, String) unique identifier of the group. Group
+                identifiers are required only for programmatic changes of group
+                <tt><a href="api.html#option-selection" shape="rect">selection</a></tt>.
+              </li><li><tt>label</tt>: (required, String) textual description of the
+                group that will be drawn in the center of the group's polygon.
+                For best results, use labels not longer than a dozen of words.
+              </li><li><p><tt>weight</tt>: (optional, Number &gt;= 0) weight of the group relative
+                  to other groups. The larger the weight, the more space the group's
+                  polygon will occupy on the screen. Good values for the weight property
+                  could be e.g. the number of documents in a cluster or the score of
+                  the cluster.
+                </p><p>
+                  Group weights must be non-negative. Zero-weight groups can receive
+                  special treatment, see the <tt><a href="api.html#option-showZeroWeightGroups" shape="rect">showZeroWeightGroups</a></tt> option.
+                </p><p>
+                  If a group's weight is not specified, FoamTree will assume the weight
+                  is <tt>1.0</tt>.
+                </p><p><strong>Note:</strong> Currently, group weights
+                  serve only as a hint to the layout engine, the areas of polygons will
+                  not fully correspond to the weights of the respective groups.
+                  You can use the <tt><a href="api.html#option-aspectRatioImprovementSteps" shape="rect">aspectRatioImprovementSteps</a></tt> and
+                  <tt><a href="api.html#option-groupWeightScaling" shape="rect">groupWeightScaling</a></tt> options to further influence the relative
+                  areas of the polygons.
+                </p></li><li><tt>groups</tt>: (optional, Array) an array of subgroups of the group.
+              </li></ul><p>
+              The input data object can contain properties other than the ones
+              required by FoamTree. Such properties will be ignored by FoamTree, but
+              can be used customization code, such as the <tt><a href="api.html#option-groupColorDecorator" shape="rect">groupColorDecorator</a></tt>
+              callback.
+            </p></dd><dt class="code">Code examples</dt><dd>Example input data object<pre class="brush: js" xml:space="preserve">{
+  groups: [
+    { label: "Group 1", weight: 10 },
+    { label: "Group 2", weight: 5.5, groups: [
+      { label: "Group 2.1", weight: 20 },
+      { label: "Group 2.2", weight: 0 }
+    ]}
+  ]
+}</pre>Example input data object with additional properties<pre class="brush: js" xml:space="preserve">{
+  groups: [
+    {
+      id: "g1",
+      label: "Bad news",
+      weight: 1,
+      sentiment: -0.5
+    },
+    {
+      id: "g2",
+      label: "Good news",
+      weight: 2,
+      sentiment: 0.7
+    }
+  ]
+}</pre></dd></dl></li></ul><h3>Appearance</h3><ul class="api"><a name="option-backgroundColor" shape="rect"><!----></a><li id="option-backgroundColor"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-backgroundColor" shape="rect">backgroundColor</a></dd><dt class="sig type">Type</dt><dd>Color:CSS3</dd><dt class="sig extra">Default</dt><dd>"rgba(0, 0, 0, 0.5)"</dd><dt class="desc">Description</dt><dd>
+            Background color of the visualization. Visualizations with fully opaque
+            or fully-transparent background color are slightly faster to draw.
+          </dd></dl></li></ul><h3>Group colors</h3><ul class="api"><a name="option-rainbowStartColor" shape="rect"><!----></a><li id="option-rainbowStartColor"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-rainbowStartColor" shape="rect">rainbowStartColor</a></dd><dt class="sig type">Type</dt><dd>Color:CSS3</dd><dt class="sig extra">Default</dt><dd>"hsla(0, 100%, 50%, 0.9)"</dd><dt class="desc">Description</dt><dd>
+            Start color to use for the group coloring rainbow.
+          </dd></dl></li><a name="option-rainbowEndColor" shape="rect"><!----></a><li id="option-rainbowEndColor"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-rainbowEndColor" shape="rect">rainbowEndColor</a></dd><dt class="sig type">Type</dt><dd>Color:CSS3</dd><dt class="sig extra">Default</dt><dd>"hsla(300, 100%, 50%, 0.9)"</dd><dt class="desc">Description</dt><dd>
+            End color to use for the group coloring rainbow.
+          </dd></dl></li><a name="option-labelDarkColor" shape="rect"><!----></a><li id="option-labelDarkColor"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-labelDarkColor" shape="rect">labelDarkColor</a></dd><dt class="sig type">Type</dt><dd>Color:CSS3</dd><dt class="sig extra">Default</dt><dd>"rgba(0, 0, 0, 0.8)"</dd><dt class="desc">Description</dt><dd>
+            The label color to use on bright-coloured groups.
+          </dd></dl></li><a name="option-labelLightColor" shape="rect"><!----></a><li id="option-labelLightColor"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-labelLightColor" shape="rect">labelLightColor</a></dd><dt class="sig type">Type</dt><dd>Color:CSS3</dd><dt class="sig extra">Default</dt><dd>"rgba(255, 255, 255, 0.8)"</dd><dt class="desc">Description</dt><dd>
+            The label color to use on dark-coloured groups.
+          </dd></dl></li><a name="option-labelColorThreshold" shape="rect"><!----></a><li id="option-labelColorThreshold"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-labelColorThreshold" shape="rect">labelColorThreshold</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>0.35</dd><dt class="sig extra">Minimum value</dt><dd>0.0</dd><dt class="sig extra">Maximum value</dt><dd>1.0</dd><dt class="desc">Description</dt><dd><p>
+              Determines the group brightness level below which <tt><a href="api.html#option-labelLightColor" shape="rect">labelLightColor</a></tt>
+              and above which <tt><a href="api.html#option-labelDarkColor" shape="rect">labelDarkColor</a></tt> are used for drawing labels.
+            </p><p>
+              If this threshold is <tt>0.0</tt>, only the <tt><a href="api.html#option-labelDarkColor" shape="rect">labelDarkColor</a></tt>
+              will be used. If this threshold is <tt>1.0</tt>, only the <tt><a href="api.html#option-labelLightColor" shape="rect">labelLightColor</a></tt>
+              color will be used. Otherwise, both colors will be used based on the lightness
+              of the group.
+            </p></dd></dl></li><a name="option-groupColorDecorator" shape="rect"><!----></a><li id="option-groupColorDecorator"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupColorDecorator" shape="rect">groupColorDecorator</a></dd><dt class="sig type">Type</dt><dd>Function</dd><dt class="sig extra">Default</dt><dd>null</dd><dt class="desc">Description</dt><dd><p>
+              Allows to customize or completely replace the default rainbow colors of groups.
+              During each redraw, FoamTree will call the provided function once
+              for each group, in depth-first order. The task of the function is to modify
+              or completely replace the default color of the group. The new color can be
+              a derivative of various properties of the group, such as its nesting level,
+              number of siblings, or, most likely, custom properties passed
+              along with the data model.
+            </p><p>
+              The signature of the function should be the following:
+            </p><p><tt>function (options, properties, variables)</tt></p><p>
+              where:
+            </p><ul><li><tt>options</tt>: all visualization options, keys correspond to option names,
+                values correspond to current option values.
+              </li><li><p><tt>properties</tt>: object with properties relating to the group being coloured.
+                  The object contains the following properties:
+                </p><ul><li><tt>group</tt>: the data object corresponding to the group, exactly as
+                    passed in the <tt><a href="api.html#option-dataObject" shape="rect">dataObject</a></tt> option.
+                  </li><li><tt>weightNormalized</tt>: the weight of the group normalized to the 0..1 range
+                    in relation the group's siblings. The unnormalized weight of the group can be
+                    retrieved from the group data object.
+                  </li><li><tt>index</tt>: the position of the group relative to its siblings in the input
+                    data object. Position indices start at 0.
+                  </li><li><tt>indexByWeight</tt>: the position of the group relative to its siblings
+                    in the decreasing weight order, 0 index corresponds to the highest-weight group.
+                  </li><li><tt>siblingCount</tt>: the number of immediate siblings of the group.
+                  </li><li><tt>level</tt>: the nesting level of the group. Level numbers
+                    start with 0.
+                  </li><li><tt>hasChildren</tt>: <tt>true</tt> if the group has child groups and the
+                    groups will be drawn. Please note that depending on the value of the
+                    <tt><a href="api.html#option-minGroupDiameter" shape="rect">minGroupDiameter</a></tt> option, child groups may not be drawn, in which
+                    case this property will be <tt>false</tt>.
+                  </li><li><tt>selected</tt>: <tt>true</tt> if the group selected.
+                  </li><li><tt>polygonCenterX</tt>: the X coordinate of the centroid of the group's polygon
+                  </li><li><tt>polygonCenterY</tt>: the Y coordinate of the centroid of the group's polygon
+                  </li><li><tt>transitionProgress</tt>: a 0..1 number indicating how far the animated
+                    transition of has progressed, 1 means a completed transition or API-triggered
+                    <tt><a href="api.html#method-redraw" shape="rect">redraw</a></tt>.
+                  </li></ul></li><li><p><tt>variables</tt>: object with color-related variables this function can change.
+                  The function can either change some of the properties of the variable objects
+                  or it can entirely replace the variables.
+                </p><p>
+                  Each color variable can be a string with CSS3 <tt>hsl</tt>, <tt>hsla</tt>, <tt>rgb</tt> or
+                  <tt>rgba</tt> color specification or an object containing the following properties:
+                </p><ul><li><tt>model</tt>: <tt>rgba</tt> for the RGBA model, <tt>hsla</tt> for the HSLA model.
+                    When adding or changing the values of other properties, it is important to
+                    set this property to reflect the desired color model.
+                  </li><li><tt>r</tt>, <tt>g</tt>, <tt>b</tt>: the RGB values if the model is RGBA,
+                    integers in the 0..255 range.
+                  </li><li><tt>h</tt>: the hue value if the model is HSL, number in the 0..359 range.
+                  </li><li><tt>s</tt>: the saturation value if the model is HSL, number in the 0..100 range.
+                  </li><li><tt>l</tt>: the lightness value if the model is HSL, number in the 0..100 range.
+                  </li><li><tt>a</tt>: the transparency value for both models, number in the 0..1 range.
+                  </li></ul><p>
+                  The following variables are available:
+                </p><ul><li><p><tt>groupColor</tt>: the default color computed for the group, in HSL model.
+                      The alpha channel for the color does not have the <tt><a href="api.html#option-groupOverlayOpacity" shape="rect">groupOverlayOpacity</a></tt>
+                      applied and there is no need to apply it in the decorator; FoamTree will apply
+                      <tt><a href="api.html#option-groupOverlayOpacity" shape="rect">groupOverlayOpacity</a></tt> during rendering.
+                    </p><p>
+                      The decorator does not have to modify colors of groups at all levels of the
+                      hierarchy. If group colors at a certain level are not modified by the decorator,
+                      FoamTree will automatically apply the brightness-based variations of the parent
+                      group's color to the child groups. Therefore, to completely change the color
+                      scheme of the visualization, it is enough to modify the colors of the groups at
+                      level 0, colors at other levels will be computed automatically.
+                    </p></li><li><p><tt>labelColor</tt>: the label color computed to match the default color of the group.
+                      The label color is defined only when the labels are to be drawn, it will be
+                      <tt>undefined</tt> when labels are not drawn, e.g. during rollout animation.
+                    </p><p>
+                      In addition to the modification of the color variable, you can also replace it
+                      with the string <tt>"auto"</tt>, which will cause FoamTree to recompute the label
+                      color again to match the changed group color.
+                    </p></li></ul></li></ul><p><strong>Note</strong>: this function will also be called during the rollout
+              animation, so the number of calls can be fairly large (animation frames * number of
+              groups). To keep the animation smooth, color computation should be as fast as possible.
+            </p><p><strong>Tip</strong>: animated color models can be created by making the color
+              dependant on time and calling the <tt><a href="api.html#method-redraw" shape="rect">redraw</a></tt> function in regular intervals.
+            </p></dd><dt class="code">Code examples</dt><dd>Making the color of smaller groups less saturated<pre class="brush: js" xml:space="preserve">foamtree.set("groupColorDecorator", function(opts, params, vars) {
+  vars.groupColor.s = props.weightNormalized * 100;
+});</pre>Colors based on a custom property<pre class="brush: js" xml:space="preserve">foamtree.set("groupColorDecorator",
+function(opts, params, vars) {
+  // Sentiment is a custom property with values
+  // in the -1..+1 range, -1 menas negative
+  // sentiment, +1 -- positive, 0 -- neutral
+  var sentiment = params.group.sentiment;
+  if (sentiment == 0) {
+    // Make neutral groups grey
+    vars.groupColor.s = 0;
+    vars.groupColor.l = 0;
+  } else {
+    if (sentiment &gt; 0) {
+      // Make positive groups green
+      vars.groupColor.h = 120;
+    } else {
+      // Make negative groups red
+      vars.groupColor.h = 0;
+    }
+
+    // Make saturation and lightness depend on
+    // the strength of the sentiment.
+    vars.groupColor.s = 50*(1+Math.abs(sentiment));
+    vars.groupColor.l = Math.abs(60 * sentiment);
+
+    // Indicate that we use the HSL model
+    vars.groupColor.model = "hsl";
+  }
+});</pre>Animated color model: a simple radar-like color cycling<pre class="brush: js" xml:space="preserve">var frame = 0;
+foamtree.set("groupColorDecorator", function(opts, params, vars) {
+  // We change the color only for top-level
+  // groups. For child groups, FoamTree will
+  // generate brightness variations of the
+  // parent group's color.
+  if (params.level == 0) {
+    var delay = 5;
+    var count = 3;
+    var frameDiv = Math.floor(frame / delay);
+    var mod = frameDiv % params.siblingCount;
+    var diff = (mod - params.index +
+      params.siblingCount) % params.siblingCount;
+    if (diff &lt; count) {
+      vars.groupColor.g = 255 * (1 -
+        ((diff * delay + frame % delay) /
+          (delay * count)));
+    } else {
+      vars.groupColor.g = 0;
+    }
+    vars.groupColor.r = 0;
+    vars.groupColor.b = 0;
+    vars.groupColor.model = "rgb";
+  }
+});
+
+// Redraw the visualization periodically.
+// Although we use setTimeout() here, use
+// the requestAnimationFrame() when possible.
+setTimeout(function redraw() {
+  if (frame &lt; 0) { // stopped?
+    return;
+  }
+  foamtree.redraw();
+  frame++;
+  setTimeout(redraw, 16); // next frame
+}, 16);</pre></dd></dl></li></ul><h3>Group fill</h3><ul class="api"><a name="option-groupGradientType" shape="rect"><!----></a><li id="option-groupGradientType"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupGradientType" shape="rect">groupGradientType</a></dd><dt class="sig type">Type</dt><dd>String</dd><dt class="sig extra">Default</dt><dd>"lightening"</dd><dt class="desc">Description</dt><dd><p>
+              The type of gradient to use for filling the groups. The following values
+              are supported:
+            </p><ul><li><tt>none</tt>: plain color fill, faster to draw than gradient fills.
+              </li><li><tt>lightening</tt>: radial gradient fill, gradient from the group's
+                base color to its lighter variation
+              </li><li><tt>darkening</tt>: radial gradient fill, gradient from the group's
+                base color to its darker variation
+              </li></ul><p/></dd></dl></li><a name="option-groupGradientStrength" shape="rect"><!----></a><li id="option-groupGradientStrength"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupGradientStrength" shape="rect">groupGradientStrength</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>0.25</dd><dt class="sig extra">Minimum value</dt><dd>0.0</dd><dt class="sig extra">Maximum value</dt><dd>1.0</dd><dt class="desc">Description</dt><dd>
+            The strength of the group fill gradient. The larger the strength, the mode
+            lightening/darkening is applied to the base color to obtain the other
+            color of the gradient. Setting <tt><a href="api.html#option-groupGradientStrength" shape="rect">groupGradientStrength</a></tt> to zero
+            effectively disables gradient fill.
+          </dd></dl></li><a name="option-groupGradientRadius" shape="rect"><!----></a><li id="option-groupGradientRadius"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupGradientRadius" shape="rect">groupGradientRadius</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>0.45</dd><dt class="sig extra">Minimum value</dt><dd>0.0</dd><dt class="sig extra">Maximum value</dt><dd>1.0</dd><dt class="desc">Description</dt><dd>
+            Radius of the gradient fill in relation to the size of the polygon representing
+            the group.
+          </dd></dl></li><a name="option-groupOverlayOpacity" shape="rect"><!----></a><li id="option-groupOverlayOpacity"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupOverlayOpacity" shape="rect">groupOverlayOpacity</a></dd><dt class="sig type">Type</dt><dd>String</dd><dt class="sig extra">Default</dt><dd>"lightening"</dd><dt class="desc">Description</dt><dd><p>
+              Parent group overlay opacity. By default, lower-level
+              groups are hidden below a semi-transparent layer that shows
+              the group's label and allows selection.
+              After the user double clicks the group,
+              the overlay is lifted to fully reveal the
+              child groups.
+            </p><p>
+              Setting <tt><a href="api.html#option-groupOverlayOpacity" shape="rect">groupOverlayOpacity</a></tt> to <tt>1.0</tt> makes
+              the overlay fully opaque, no child groups will be visible
+              until the user double clicks the group. Values between
+              <tt>1.0</tt> and <tt>0.0</tt> will render a partially-transparent
+              overlay.
+            </p><p>
+              Setting <tt><a href="api.html#option-groupOverlayOpacity" shape="rect">groupOverlayOpacity</a></tt> to <tt>0.0</tt> will
+              permanently disable the overlay. As a result, only the
+              lowest-level groups will be visible.
+            </p></dd></dl></li></ul><h3>Group borders</h3><ul class="api"><a name="option-groupBorderWidth" shape="rect"><!----></a><li id="option-groupBorderWidth"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupBorderWidth" shape="rect">groupBorderWidth</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>6</dd><dt class="sig extra">Minimum value</dt><dd>0</dd><dt class="sig extra">Maximum value</dt><dd>30</dd><dt class="desc">Description</dt><dd>
+            Width of the border between groups.
+          </dd></dl></li><a name="option-groupInsetWidth" shape="rect"><!----></a><li id="option-groupInsetWidth"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupInsetWidth" shape="rect">groupInsetWidth</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>6</dd><dt class="sig extra">Minimum value</dt><dd>0</dd><dt class="sig extra">Maximum value</dt><dd>30</dd><dt class="desc">Description</dt><dd>
+            Width of the internal margin to apply to the parent group when drawing its child groups.
+          </dd></dl></li><a name="option-groupBorderRadius" shape="rect"><!----></a><li id="option-groupBorderRadius"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupBorderRadius" shape="rect">groupBorderRadius</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>0.35</dd><dt class="sig extra">Minimum value</dt><dd>0.0</dd><dt class="sig extra">Maximum value</dt><dd>1.0</dd><dt class="desc">Description</dt><dd>
+            Radius of the group borders. The radius of 0 disables rounding of borders and
+            slightly speeds-up rendering.
+          </dd></dl></li><a name="option-groupBorderWidthScaling" shape="rect"><!----></a><li id="option-groupBorderWidthScaling"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupBorderWidthScaling" shape="rect">groupBorderWidthScaling</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>0.6</dd><dt class="sig extra">Minimum value</dt><dd>0.5</dd><dt class="sig extra">Maximum value</dt><dd>1.0</dd><dt class="desc">Description</dt><dd>
+            The scaling factor to apply when drawing borders of child groups. Border with of a child
+            group will be <tt><a href="api.html#option-groupBorderWidthScaling" shape="rect">groupBorderWidthScaling</a></tt> smaller than the border width of
+            the immediate parent group. Setting <tt><a href="api.html#option-groupBorderWidthScaling" shape="rect">groupBorderWidthScaling</a></tt> to 1.0 will
+            draw borders of equal widths on all levels of the group hierarchy.
+          </dd></dl></li></ul><h3>Group labels</h3><ul class="api"><a name="option-groupFontFamily" shape="rect"><!----></a><li id="option-groupFontFamily"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupFontFamily" shape="rect">groupFontFamily</a></dd><dt class="sig type">Type</dt><dd>String</dd><dt class="sig extra">Default</dt><dd>"Impact, Charcoal, sans-serif</dd><dt class="desc">Description</dt><dd>
+            Font family to use for drawing group labels. CSS-compliant font family specifications
+            are supported, including those imported using the @font-face syntax.
+          </dd></dl></li><a name="option-groupMinFontSize" shape="rect"><!----></a><li id="option-groupMinFontSize"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupMinFontSize" shape="rect">groupMinFontSize</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>4%</dd><dt class="desc">Description</dt><dd>
+            Minimum font size to use for drawing labels inside groups.
+            Two font sizing strategies are supported:
+            <p><ul><li>
+                  absolute: when the property is set to a numeric value, such as <tt>27</tt>,
+                  the value will be interpreted as the number of pixels
+                </li><li><p>
+                    relative: when the property is set to a percentage, such as <tt>40%</tt>,
+                    the font size will be calculated as a percentage of the group's
+                    height.
+                  </p><p>
+                    Relative font sizes may be useful when the total size of the visualization
+                    varies in a large range. In such cases, absolute font sizing would result
+                    in either too small or too large fonts and truncation of label texts.
+                  </p></li></ul></p></dd></dl></li><a name="option-groupMaxFontSize" shape="rect"><!----></a><li id="option-groupMaxFontSize"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupMaxFontSize" shape="rect">groupMaxFontSize</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>22%</dd><dt class="desc">Description</dt><dd>
+            Maximum font size to use for drawing labels inside groups. See the
+            <tt><a href="api.html#option-groupMinFontSize" shape="rect">groupMinFontSize</a></tt> option for the supported font sizing strategies.
+          </dd></dl></li><a name="option-groupMaxTotalLabelHeight" shape="rect"><!----></a><li id="option-groupMaxTotalLabelHeight"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupMaxTotalLabelHeight" shape="rect">groupMaxTotalLabelHeight</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>0.65</dd><dt class="sig extra">Minimum value</dt><dd>0.05</dd><dt class="sig extra">Maximum value</dt><dd>1.0</dd><dt class="desc">Description</dt><dd>
+            The maximum total height of the label in relation to the height of the
+            group's polygon.
+          </dd></dl></li><a name="option-groupLinePadding" shape="rect"><!----></a><li id="option-groupLinePadding"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupLinePadding" shape="rect">groupLinePadding</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>1</dd><dt class="sig extra">Minimum value</dt><dd>0</dd><dt class="sig extra">Maximum value</dt><dd>20</dd><dt class="desc">Description</dt><dd>
+            Line padding of multiline group labels, in pixels.
+          </dd></dl></li><a name="option-groupLabelDecorator" shape="rect"><!----></a><li id="option-groupLabelDecorator"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupLabelDecorator" shape="rect">groupLabelDecorator</a></dd><dt class="sig type">Type</dt><dd>Function</dd><dt class="sig extra">Default</dt><dd>null</dd><dt class="desc">Description</dt><dd><p>
+              Allows to customize or completely replace the default text of
+              group labels. When labels are drawn, FoamTree will call the provided function once
+              for each group, in depth-first order. The task of the function is to modify
+              or completely replace the default label text. The custom label text
+              will most likely be based on custom properties passed along with the data model.
+            </p><p>
+              The signature of the function should be the following:
+            </p><p><tt>function (options, properties, variables)</tt></p><p>
+              where:
+            </p><ul><li><tt>options</tt>: all visualization options, keys correspond to option names,
+                values correspond to current option values.
+              </li><li><p><tt>properties</tt>: object with properties relating to the group being processed.
+                  The object contains the following properties:
+                </p><ul><li><tt>group</tt>: the data object corresponding to the group, exactly as
+                    passed in the <tt><a href="api.html#option-dataObject" shape="rect">dataObject</a></tt> option.
+                  </li><li><tt>weightNormalized</tt>: the weight of the group normalized to the 0..1 range
+                    in relation the group's siblings. The unnormalized weight of the group can be
+                    retrieved from the group data object.
+                  </li><li><tt>index</tt>: the position of the group relative to its siblings in the input
+                    data object. Position indices start at 0.
+                  </li><li><tt>indexByWeight</tt>: the position of the group relative to its siblings
+                    in the decreasing weight order, 0 index corresponds to the highest-weight group.
+                  </li><li><tt>siblingCount</tt>: the number of immediate siblings of the group.
+                  </li><li><tt>level</tt>: the nesting level of the group. Level numbers
+                    start with 0.
+                  </li><li><tt>hasChildren</tt>: <tt>true</tt> if the group has child groups and the
+                    groups will be drawn. Please note that depending on the value of the
+                    <tt><a href="api.html#option-minGroupDiameter" shape="rect">minGroupDiameter</a></tt> option, child groups may not be drawn, in which
+                    case this property will be <tt>false</tt>.
+                  </li><li><tt>selected</tt>: <tt>true</tt> if the group selected.
+                  </li><li><tt>polygonCenterX</tt>: the X coordinate of the centroid of the group's polygon
+                  </li><li><tt>polygonCenterY</tt>: the Y coordinate of the centroid of the group's polygon
+                  </li><li><tt>transitionProgress</tt>: a 0..1 number indicating how far the animated
+                    transition of has progressed, 1 means a completed transition or API-triggered
+                    <tt><a href="api.html#method-redraw" shape="rect">redraw</a></tt>.
+                  </li><li><tt>boxWidth</tt>: width, in pixels, of the bounding box in which the
+                    label will be drawn. You may want to vary the length of the label
+                    based on the dimensions of the bounding box.
+                  </li><li><tt>boxHeight</tt>: height of the label's bounding box in pixels.
+                  </li></ul></li><li><p><tt>variables</tt>: object with label-related variables this function can change.
+                  The function can either change some of the properties of the variable objects
+                  or it can entirely replace the variables.
+                </p><p>
+                  The following variables are available:
+                </p><ul><li><tt>labelText</tt>: the default text of the label, equal to the <tt>label</tt>
+                    property of the group's data object.
+                  </li></ul></li></ul></dd><dt class="code">Code examples</dt><dd>Displaying group's weight instead of its label<pre class="brush: js" xml:space="preserve">foamtree.set("groupLabelDecorator", function(opts, params, vars) {
+  vars.labelText = params.group.weight;
+});</pre></dd></dl></li></ul><h3>Group decoration</h3><ul class="api"><a name="option-groupSelectionColor" shape="rect"><!----></a><li id="option-groupSelectionColor"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupSelectionColor" shape="rect">groupSelectionColor</a></dd><dt class="sig type">Type</dt><dd>Color:CSS3</dd><dt class="sig extra">Default</dt><dd>"rgba(255, 255, 255, 0.5)"</dd><dt class="desc">Description</dt><dd>
+            Group selection color. When the user selects one or more groups, an overlay
+            will be drawn in <tt><a href="api.html#option-groupSelectionColor" shape="rect">groupSelectionColor</a></tt> on all selected groups.
+          </dd></dl></li><a name="option-groupSelectionOutlineColor" shape="rect"><!----></a><li id="option-groupSelectionOutlineColor"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupSelectionOutlineColor" shape="rect">groupSelectionOutlineColor</a></dd><dt class="sig type">Type</dt><dd>Color:CSS3</dd><dt class="sig extra">Default</dt><dd>"rgba(255, 255, 255, 0.9)"</dd><dt class="desc">Description</dt><dd><dt class="desc">Description</dt><dd>
+              Group selection outline color. When the user selects one or more groups, an
+              outline will be drawn in <tt><a href="api.html#option-groupSelectionOutlineColor" shape="rect">groupSelectionOutlineColor</a></tt> on all selected
+              groups.
+            </dd></dd></dl></li><a name="option-groupHoverColor" shape="rect"><!----></a><li id="option-groupHoverColor"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupHoverColor" shape="rect">groupHoverColor</a></dd><dt class="sig type">Type</dt><dd>Color:CSS3</dd><dt class="sig extra">Default</dt><dd>"rgba(255, 255, 255, 0.25)"</dd><dt class="desc">Description</dt><dd>
+            Group hover color. When the user moves the mouse pointer over a group,
+            an overlay will be drawn in <tt><a href="api.html#option-groupHoverColor" shape="rect">groupHoverColor</a></tt>.
+          </dd></dl></li><a name="option-groupHoverOutlineColor" shape="rect"><!----></a><li id="option-groupHoverOutlineColor"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupHoverOutlineColor" shape="rect">groupHoverOutlineColor</a></dd><dt class="sig type">Type</dt><dd>Color:CSS3</dd><dt class="sig extra">Default</dt><dd>"rgba(255, 255, 255, 0.4)"</dd><dt class="desc">Description</dt><dd>
+            Group hover outline color. When the user moves the mouse pointer over a group,
+            an outline will be drawn in <tt><a href="api.html#option-groupHoverOutlineColor" shape="rect">groupHoverOutlineColor</a></tt>.
+          </dd></dl></li></ul><h3>Group layout</h3><ul class="api"><a name="option-minGroupDiameter" shape="rect"><!----></a><li id="option-minGroupDiameter"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-minGroupDiameter" shape="rect">minGroupDiameter</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>40</dd><dt class="sig extra">Minimum value</dt><dd>0</dd><dt class="sig extra">Maximum value</dt><dd>200</dd><dt class="desc">Description</dt><dd>
+            Minimum estimated diameter child groups must have in order to be drawn. To avoid
+            illegible small labels and to speed up the rendering, FoamTree can be set to
+            skip drawing child groups if their estimated diameter is smaller than
+            <tt><a href="api.html#option-minGroupDiameter" shape="rect">minGroupDiameter</a></tt>. Setting the minimum group diameter to 0 will cause
+            FoamTree to draw all groups, regardless of their diameter on the screen.
+          </dd></dl></li><a name="option-aspectRatioImprovementSteps" shape="rect"><!----></a><li id="option-aspectRatioImprovementSteps"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-aspectRatioImprovementSteps" shape="rect">aspectRatioImprovementSteps</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>1</dd><dt class="sig extra">Minimum value</dt><dd>0</dd><dt class="sig extra">Maximum value</dt><dd>50</dd><dt class="desc">Description</dt><dd>
+            The strength of polygon aspect ratio improvement algorithm. When
+            <tt><a href="api.html#option-aspectRatioImprovementSteps" shape="rect">aspectRatioImprovementSteps</a></tt> is greater than 0, FoamTree will try to
+            avoid elongated polygons and prefer round, well-balanced ones. Strong aspect ratio
+            improvement however, will limit FoamTree's ability to reflect different weights
+            of groups, all groups will have similar size on the screen, regardless of their
+            weights.
+          </dd></dl></li><a name="option-groupWeightScaling" shape="rect"><!----></a><li id="option-groupWeightScaling"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupWeightScaling" shape="rect">groupWeightScaling</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>1</dd><dt class="sig extra">Minimum value</dt><dd>0</dd><dt class="sig extra">Maximum value</dt><dd>10</dd><dt class="desc">Description</dt><dd>
+            Applies corrective scaling to group weights. Set <tt><a href="api.html#option-groupWeightScaling" shape="rect">groupWeightScaling</a></tt>
+            to a value lower than 1 to make the polygon area differences less pronounced.
+            Value larger than 1 will make the polygon area differences larger. When
+            <tt><a href="api.html#option-groupWeightScaling" shape="rect">groupWeightScaling</a></tt> is 1, no scaling is applied.
+          </dd></dl></li><a name="option-showZeroWeightGroups" shape="rect"><!----></a><li id="option-showZeroWeightGroups"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-showZeroWeightGroups" shape="rect">showZeroWeightGroups</a></dd><dt class="sig type">Type</dt><dd>Boolean</dd><dt class="sig extra">Default</dt><dd>true</dd><dt class="desc">Description</dt><dd>
+            If <tt>true</tt>, FoamTree will also show groups whose weight is zero.
+            Zero-weight groups will be rendered as if their weight was slightly smaller than
+            the smallest non-zero weight of the sibling groups.
+          </dd></dl></li><a name="option-pixelRatio" shape="rect"><!----></a><li id="option-pixelRatio"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-pixelRatio" shape="rect">pixelRatio</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>1</dd><dt class="desc">Description</dt><dd><p>
+              The physical-to-display pixel count ratio to assume when drawing the final
+              visualization. On modern devices with high-density screens (such as the
+              Retina display) one logical pixel can be mapped to more than one physical pixel.
+              You can use this option to increase the resolution at which the visualization
+              is drawn to make the image clearer and labels more legible.
+            </p><p>
+              By default, <tt><a href="api.html#option-pixelRatio" shape="rect">pixelRatio</a></tt> is <tt>1</tt>. In such cases, the width and
+              height of the canvas on which FoamTree is drawn will be equal to the
+              pixel dimensions of the HTML element FoamTree was embedded in. For
+              <tt>pixelRatios</tt> less/greater than 1, the pixel dimensions of the canvas
+              will be smaller/larger than the dimensions of the enclosing HTML element.
+              For example, if you set <tt><a href="api.html#option-pixelRatio" shape="rect">pixelRatio</a></tt> to 2 and if the size of the
+              enclosing HTML element is 400x400 pixels, the size of the FoamTree canvas will
+              be 800x800 pixels. Such a configuration will better utilize the extra pixels
+              available on e.g. Retina displays.
+            </p><p><strong>Tip</strong>: on modern browsers, you can retrieve the device-specific
+              pixel ratio from the <tt>window.devicePixelRatio</tt> property.
+            </p><p id="ipad-with-retina-performance"><strong>Tip</strong>: to boost the performance on iPad with Retina display with
+              <tt>pixelRatio = 2</tt>, set the width of the FoamTree HTML element to be at least
+              one pixel less than the total screen width. Please see the
+              <a rel="_blank" href="../../../../mobile.html">mobile demo</a> for an example.
+            </p><p><strong>Important</strong>: when setting <tt><a href="api.html#option-pixelRatio" shape="rect">pixelRatio</a></tt> to a value larger
+              than 1 on mobile devices, make sure you also correctly set the size of the
+              page's viewport. The default viewport may be very large, leading to a
+              very large canvas being needlessly allocated. Please see the
+              <a rel="_blank" href="../../../../mobile.html">mobile demo</a> CSS for an example.
+            </p></dd></dl></li><a name="option-pixelRatioDuringRollout" shape="rect"><!----></a><li id="option-pixelRatioDuringRollout"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-pixelRatioDuringRollout" shape="rect">pixelRatioDuringRollout</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>1</dd><dt class="desc">Description</dt><dd><p>
+              The physical to display pixel count ratio to assume when drawing the
+              visualization rollout animation.
+            </p><p>
+              You can override the default pixel ratio during rollout to a higher value
+              (e.g. <tt>2</tt> on Retina displays) to have the animation drawn in more detail,
+              but noticeably slower. You can also set this option to a lower value, e.g.
+              <tt>0.5</tt> to have the animation drawn faster, but with less detail.
+            </p></dd></dl></li></ul><h3>Rollout</h3><ul class="api"><a name="option-rolloutType" shape="rect"><!----></a><li id="option-rolloutType"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-rolloutType" shape="rect">rolloutType</a></dd><dt class="sig type">Type</dt><dd>String</dd><dt class="sig extra">Default</dt><dd>auto</dd><dt class="desc">Description</dt><dd><p>
+              The style of the initial animation. The following values are supported:
+            </p><ul><li><tt>auto</tt>: rollout style chosen automatically to ensure smooth
+                animation given the current data set and the performance of the client's device.
+              </li><li><tt>explode</tt>: explosion-like initial animation. This animation type
+                is most resource demanding, it may not be smooth on slow devices or
+                for large data sets.
+              </li><li><tt>fadein</tt>: progressive fading-in. This animatio type is less resource
+                demanding and should be smooth on most devices and typical data sets.
+              </li><li><tt>none</tt>: no initial animation.
+              </li></ul></dd></dl></li><a name="option-rolloutSpeed" shape="rect"><!----></a><li id="option-rolloutSpeed"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-rolloutSpeed" shape="rect">rolloutSpeed</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>5</dd><dt class="sig extra">Minimum value</dt><dd>1</dd><dt class="sig extra">Maximum value</dt><dd>10</dd><dt class="desc">Description</dt><dd>
+            The speed of the initial animation.
+          </dd></dl></li><a name="option-rolloutRate" shape="rect"><!----></a><li id="option-rolloutRate"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-rolloutRate" shape="rect">rolloutRate</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>5</dd><dt class="sig extra">Minimum value</dt><dd>1</dd><dt class="sig extra">Maximum value</dt><dd>5</dd><dt class="desc">Description</dt><dd>
+            The rate at which new groups are revealed during the initial animation.
+          </dd></dl></li><a name="option-siblingRevealingParallelism" shape="rect"><!----></a><li id="option-siblingRevealingParallelism"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-siblingRevealingParallelism" shape="rect">siblingRevealingParallelism</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>0.95</dd><dt class="sig extra">Minimum value</dt><dd>0.0</dd><dt class="sig extra">Maximum value</dt><dd>1.0</dd><dt class="desc">Description</dt><dd><p>
+              The level of parallelism of sibling group animation. When
+              <tt><a href="api.html#option-siblingRevealingParallelism" shape="rect">siblingRevealingParallelism</a></tt> is 1, all sibling groups
+              will start revealing their children at the same time. When
+              <tt><a href="api.html#option-siblingRevealingParallelism" shape="rect">siblingRevealingParallelism</a></tt> is 0, sibling sites will start
+              revealing their children one by one.
+            </p><p>
+              Values closer to 0 produce more smooth animation, but they may
+              cause the animation to take a fairly long time. With values closer
+              to 1, the animation will complete faster but it may be less smooth.
+            </p></dd></dl></li><a name="option-childRevealingParallelism" shape="rect"><!----></a><li id="option-childRevealingParallelism"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-childRevealingParallelism" shape="rect">childRevealingParallelism</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>0.95</dd><dt class="sig extra">Minimum value</dt><dd>0.0</dd><dt class="sig extra">Maximum value</dt><dd>1.0</dd><dt class="desc">Description</dt><dd><p>
+              The level of parallelism of child group animation. When
+              <tt><a href="api.html#option-childRevealingParallelism" shape="rect">childRevealingParallelism</a></tt> is 1, child groups at all levels
+              will start animating at the same time. When <tt><a href="api.html#option-childRevealingParallelism" shape="rect">childRevealingParallelism</a></tt>
+              is 0, child groups will start revealing only after the animation of the
+              parent group has completed.
+            </p><p>
+              Values closer to 0 produce more smooth animation, but they may
+              cause the animation to take slightly longer to complete. With values closer
+              to 1, the animation will complete faster but it may be less smooth.
+            </p></dd></dl></li><a name="option-groupsVisibleAtRolloutStart" shape="rect"><!----></a><li id="option-groupsVisibleAtRolloutStart"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-groupsVisibleAtRolloutStart" shape="rect">groupsVisibleAtRolloutStart</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>0.0</dd><dt class="sig extra">Minimum value</dt><dd>0.0</dd><dt class="sig extra">Maximum value</dt><dd>1.0</dd><dt class="desc">Description</dt><dd>
+            The percentage of groups to be visible right at the beginning of the initial
+            animation, the remaining groups will be revealed during the animation. When
+            <tt><a href="api.html#option-groupsVisibleAtRolloutStart" shape="rect">groupsVisibleAtRolloutStart</a></tt> is 1, all groups will be revealed at
+            the start of the animation.
+          </dd></dl></li><a name="option-explodeDistance" shape="rect"><!----></a><li id="option-explodeDistance"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-explodeDistance" shape="rect">explodeDistance</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>0.4</dd><dt class="sig extra">Minimum value</dt><dd>0.0</dd><dt class="sig extra">Maximum value</dt><dd>1.0</dd><dt class="desc">Description</dt><dd>
+            The explosion distance, the larger the value, the larger the distance.
+            Applicable only when <tt><a href="api.html#option-rolloutType" shape="rect">rolloutType</a></tt> is <tt>explode</tt>
+            or <tt>auto</tt>.
+          </dd></dl></li><a name="option-fadeInTime" shape="rect"><!----></a><li id="option-fadeInTime"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-fadeInTime" shape="rect">fadeInTime</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>2.0</dd><dt class="sig extra">Minimum value</dt><dd>0.0</dd><dt class="sig extra">Maximum value</dt><dd>5.0</dd><dt class="desc">Description</dt><dd>
+            The fade-in time of the final visualization. When <tt><a href="api.html#option-fadeInTime" shape="rect">fadeInTime</a></tt>
+            is 0, no fading will be performed.
+          </dd></dl></li><a name="option-fadeOutTime" shape="rect"><!----></a><li id="option-fadeOutTime"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-fadeOutTime" shape="rect">fadeOutTime</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>0.35</dd><dt class="sig extra">Minimum value</dt><dd>0.0</dd><dt class="sig extra">Maximum value</dt><dd>5.0</dd><dt class="desc">Description</dt><dd>
+            The time of the fade-out when loading new data. When <tt><a href="api.html#option-fadeOutTime" shape="rect">fadeOutTime</a></tt>
+            is 0, no fading will be applied.
+          </dd></dl></li><a name="option-drawLabelsDuringRollout" shape="rect"><!----></a><li id="option-drawLabelsDuringRollout"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-drawLabelsDuringRollout" shape="rect">drawLabelsDuringRollout</a></dd><dt class="sig type">Type</dt><dd>Boolean</dd><dt class="sig extra">Default</dt><dd>false</dd><dt class="desc">Description</dt><dd>
+            If <tt>true</tt>, group labels will be drawn during the initial animation.
+            Drawing of labels significantly slows down rendering and therefore setting
+            this optio to <tt>true</tt> is discouraged.
+          </dd></dl></li><a name="option-roundBordersDuringRollout" shape="rect"><!----></a><li id="option-roundBordersDuringRollout"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-roundBordersDuringRollout" shape="rect">roundBordersDuringRollout</a></dd><dt class="sig type">Type</dt><dd>Boolean</dd><dt class="sig extra">Default</dt><dd>true</dd><dt class="desc">Description</dt><dd>
+            If <tt>true</tt>, border rounding will be applied also during the
+            initial animation. Setting this option to <tt>false</tt> can slightly
+            increase the smoothness of the animation.
+          </dd></dl></li></ul><h3>Attribution</h3><ul class="api"><a name="option-attributionText" shape="rect"><!----></a><li id="option-attributionText"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-attributionText" shape="rect">attributionText</a></dd><dt class="sig type">Type</dt><dd>String</dd><dt class="sig extra">Default</dt><dd/><dt class="desc">Description</dt><dd><p>
+              The label of the attribution group. If <tt><a href="api.html#option-attributionText" shape="rect">attributionText</a></tt> or
+              <tt><a href="api.html#option-attributionLogo" shape="rect">attributionLogo</a></tt> is not empty, an extra group is added to the
+              visualization with the provided text and logo. If <tt><a href="api.html#option-attributionUrl" shape="rect">attributionUrl</a></tt>
+              is not empty, clicking the attribution group will open the provided
+              URL in the browser.
+            </p><p><strong>Note</strong>: The limited demo version of FoamTree does not
+              allow to disable or change the attribution group. Please
+              <a rel="_blank" href="http://carrotsearch.com/foamtree-how-to-order">contact Carrot
+              Search</a> for licensing of a fully customizable distribution.
+            </p></dd></dl></li><a name="option-attributionLogo" shape="rect"><!----></a><li id="option-attributionLogo"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-attributionLogo" shape="rect">attributionLogo</a></dd><dt class="sig type">Type</dt><dd>String</dd><dt class="sig extra">Default</dt><dd/><dt class="desc">Description</dt><dd><p>
+              The logo to display in the attribution group. The logo can be specified
+              as a relative or absolute HTTP URL or a data URI.
+            </p><p>
+              When using HTTP URLs, the image should to be preloaded before FoamTree
+              starts rendering the visualization. Without preloading, the image may
+              not be visible in the first rendering of the visualization. For this
+              reason, the data URIs may be easier to use. You can use services like
+              <a href="http://dataurl.net" rel="_blank">dataurl.net</a> to convert
+              your images to data URIs.
+            </p><p><strong>Note</strong>: The limited demo version of FoamTree does not
+              allow to disable or change the attribution group. Please
+              <a rel="_blank" href="http://carrotsearch.com/foamtree-how-to-order">contact Carrot
+              Search</a> for licensing of a fully customizable distribution.
+            </p></dd><dt class="code">Code examples</dt><dd>Using HTTP URL attribution image<pre class="brush: js" xml:space="preserve">foamtree.set("attributionLogo", "assets/2.0.3/optional/custom-logo.png");</pre>Using data URI attribution image<pre class="brush: js" xml:space="preserve">foamtree.set("attributionLogo", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAEdSURBVDjLY/j//z8DJZiB6gY0rH7xpW7li3YKDHj1v2bli38lix61k2VA5fJn/9eeeP+/fcOL/wlT7/aRbEDegkf/Vxx/93/xobf/S5c8/u/ecm0eSQYkTX/4f+HBN/8nbX/xf+bul/8Tp9/9r1N0dgnRBgT33QZqfPW/YdXj/42rH//v2vjkv3fHtf9SScceEWWAc8u1/xO2Pv9fsvjB//IlD4CGPPrvXH/5v2Tksc1EGWBaful/+/on/4sW3gfGxsP/9lUX/ksEH1gj6rqdhSgDlPPO/q9b8fB/5bIH/23LL/wXD9i7kqRAlEo6+b908f3/NiXn/4t57V1EcjRKRB75b1145r+o684FZCUkMb8D/0Uct88euMxEKgYA7Ojrv4CgE7EAAAAASUVORK5CYII=");</pre></dd></dl></li><a name="option-attributionUrl" shape="rect"><!----></a><li id="option-attributionUrl"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-attributionUrl" shape="rect">attributionUrl</a></dd><dt class="sig type">Type</dt><dd>String</dd><dt class="sig extra">Default</dt><dd/><dt class="desc">Description</dt><dd><p>
+              The URL to open when the user clicks the attribution group.
+            </p><p><strong>Note</strong>: The limited demo version of FoamTree does not
+              allow to disable or change the attribution group. Please
+              <a rel="_blank" href="http://carrotsearch.com/foamtree-how-to-order">contact Carrot
+              Search</a> for licensing of a fully customizable distribution.
+            </p></dd></dl></li></ul><h3>Title bar</h3><ul class="api"><a name="option-maxLabelSizeForTitleBar" shape="rect"><!----></a><li id="option-maxLabelSizeForTitleBar"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-maxLabelSizeForTitleBar" shape="rect">maxLabelSizeForTitleBar</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>12</dd><dt class="desc">Description</dt><dd><p>
+              Maximum group label size in pixels whose label to show in
+              the title bar. Small size of a group may cause its label to be
+              drawn in a small font and thus appear illegible. For this reason,
+              when the user hovers the mouse pointer over a group with a small
+              label, the label can be shown in a dedicated title bar.
+            </p><p>
+              The <tt><a href="api.html#option-maxLabelSizeForTitleBar" shape="rect">maxLabelSizeForTitleBar</a></tt> defines the threshold below
+              which group labels will be shown in the title bar. Setting
+              <tt><a href="api.html#option-maxLabelSizeForTitleBar" shape="rect">maxLabelSizeForTitleBar</a></tt> to <tt>0</tt> will disable the
+              title bar completely. Setting the option to a value equal or
+              larger than <tt>maxFontSize</tt> will cause the title bar to
+              appear for all groups.
+            </p></dd></dl></li><a name="option-titleBarFontFamily" shape="rect"><!----></a><li id="option-titleBarFontFamily"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-titleBarFontFamily" shape="rect">titleBarFontFamily</a></dd><dt class="sig type">Type</dt><dd>String</dd><dt class="sig extra">Default</dt><dd>"Impact, Charcoal, sans-serif</dd><dt class="desc">Description</dt><dd>
+            Font family to use for drawing the title bar. CSS-compliant font family specifications
+            are supported, including those imported using the @font-face syntax.
+          </dd></dl></li><a name="option-titleBarBackgroundColor" shape="rect"><!----></a><li id="option-titleBarBackgroundColor"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-titleBarBackgroundColor" shape="rect">titleBarBackgroundColor</a></dd><dt class="sig type">Type</dt><dd>Color:CSS3</dd><dt class="sig extra">Default</dt><dd>"rgba(0, 0, 0, 0.5"</dd><dt class="desc">Description</dt><dd>
+            Title bar background color.
+          </dd></dl></li><a name="option-titleBarTextColor" shape="rect"><!----></a><li id="option-titleBarTextColor"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-titleBarTextColor" shape="rect">titleBarTextColor</a></dd><dt class="sig type">Type</dt><dd>Color:CSS3</dd><dt class="sig extra">Default</dt><dd>"rgba(255, 255, 255, 0.9)"</dd><dt class="desc">Description</dt><dd>
+            Title bar text color.
+          </dd></dl></li><a name="option-titleBarTextPaddingTopBottom" shape="rect"><!----></a><li id="option-titleBarTextPaddingTopBottom"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-titleBarTextPaddingTopBottom" shape="rect">titleBarTextPaddingTopBottom</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>10</dd><dt class="sig extra">Minimum value</dt><dd>0</dd><dt class="sig extra">Maximum value</dt><dd>100</dd><dt class="desc">Description</dt><dd>
+            Top and bottom (vertical) padding to draw inside the title bar.
+          </dd></dl></li><a name="option-titleBarTextPaddingLeftRight" shape="rect"><!----></a><li id="option-titleBarTextPaddingLeftRight"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-titleBarTextPaddingLeftRight" shape="rect">titleBarTextPaddingLeftRight</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>20</dd><dt class="sig extra">Minimum value</dt><dd>0</dd><dt class="sig extra">Maximum value</dt><dd>100</dd><dt class="desc">Description</dt><dd>
+            Left and right (horizontal) padding to draw inside the title bar.
+          </dd></dl></li><a name="option-titleBarMinFontSize" shape="rect"><!----></a><li id="option-titleBarMinFontSize"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-titleBarMinFontSize" shape="rect">titleBarMinFontSize</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>10</dd><dt class="sig extra">Minimum value</dt><dd>2</dd><dt class="sig extra">Maximum value</dt><dd>100</dd><dt class="desc">Description</dt><dd>
+            Minimum font size to use for drawing labels in the title bar.
+          </dd></dl></li><a name="option-titleBarMaxFontSize" shape="rect"><!----></a><li id="option-titleBarMaxFontSize"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-titleBarMaxFontSize" shape="rect">titleBarMaxFontSize</a></dd><dt class="sig type">Type</dt><dd>Number</dd><dt class="sig extra">Default</dt><dd>40</dd><dt class="sig extra">Minimum value</dt><dd>2</dd><dt class="sig extra">Maximum value</dt><dd>100</dd><dt class="desc">Description</dt><dd>
+            Maximum font size to use for drawing labels in the title bar.
+          </dd></dl></li><a name="option-titleBarDecorator" shape="rect"><!----></a><li id="option-titleBarDecorator"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-titleBarDecorator" shape="rect">titleBarDecorator</a></dd><dt class="sig type">Type</dt><dd>Function</dd><dt class="sig extra">Default</dt><dd>null</dd><dt class="desc">Description</dt><dd><p>
+              Allows to customize or completely replace the text displayed in the title
+              bar. When the title bar is drawn, FoamTree will call the provided function.
+              The task of the function is to modify or completely replace the default text
+              or color. The custom label text will most likely be based on custom
+              properties passed along with the data model.
+            </p><p>
+              The signature of the function should be the following:
+            </p><p><tt>function (options, properties, variables)</tt></p><p>
+              where:
+            </p><ul><li><tt>options</tt>: all visualization options, keys correspond to option names,
+                values correspond to current option values.
+              </li><li><p><tt>properties</tt>: object with properties relating to the group being processed.
+                  The object contains the following properties:
+                </p><ul><li><tt>group</tt>: the data object corresponding to the group for which the title
+                    bar is being drawn, exactly as passed in the <tt><a href="api.html#option-dataObject" shape="rect">dataObject</a></tt> option.
+                  </li><li><tt>weightNormalized</tt>: the weight of the group normalized to the 0..1 range
+                    in relation the group's siblings. The unnormalized weight of the group can be
+                    retrieved from the group data object.
+                  </li><li><tt>index</tt>: the position of the group relative to its siblings in the input
+                    data object. Position indices start at 0.
+                  </li><li><tt>indexByWeight</tt>: the position of the group relative to its siblings
+                    in the decreasing weight order, 0 index corresponds to the highest-weight group.
+                  </li><li><tt>siblingCount</tt>: the number of immediate siblings of the group.
+                  </li><li><tt>level</tt>: the nesting level of the group. Level numbers
+                    start with 0.
+                  </li><li><tt>hasChildren</tt>: <tt>true</tt> if the group has child groups and the
+                    groups will be drawn. Please note that depending on the value of the
+                    <tt><a href="api.html#option-minGroupDiameter" shape="rect">minGroupDiameter</a></tt> option, child groups may not be drawn, in which
+                    case this property will be <tt>false</tt>.
+                  </li><li><tt>selected</tt>: <tt>true</tt> if the group selected.
+                  </li><li><tt>polygonCenterX</tt>: the X coordinate of the centroid of the group's polygon
+                  </li><li><tt>polygonCenterY</tt>: the Y coordinate of the centroid of the group's polygon
+                  </li><li><tt>transitionProgress</tt>: a 0..1 number indicating how far the animated
+                    transition of has progressed, 1 means a completed transition or API-triggered
+                    <tt><a href="api.html#method-redraw" shape="rect">redraw</a></tt>.
+                  </li><li><tt>boxWidth</tt>: width, in pixels, of the title bar.
+                    You may want to vary the length of the label
+                    based on the dimensions of the title bar.
+                  </li><li><tt>boxHeight</tt>: height of the title bar, in pixels.
+                  </li></ul></li><li><p><tt>variables</tt>: object with title-bar-related variables this function can change.
+                  The function can either change some of the properties of the variable objects
+                  or it can entirely replace the variables.
+                </p><p>
+                  The following variables are available:
+                </p><ul><li><tt>titleBarText</tt>: the default text to display in the title bar, equal
+                    to the label of the group.
+                  </li><li><p><tt><a href="api.html#option-titleBarTextColor" shape="rect">titleBarTextColor</a></tt>: the color to use for drawing title bar text,
+                      equal to <tt><a href="api.html#option-titleBarTextColor" shape="rect">titleBarTextColor</a></tt> by default. Please see the documentation of
+                      <tt><a href="api.html#option-groupColorDecorator" shape="rect">groupColorDecorator</a></tt> option for the color object format.
+                    </p></li></ul></li></ul></dd><dt class="code">Code examples</dt><dd>Appending group weight to the title bar text<pre class="brush: js" xml:space="preserve">foamtree.set("titleBarDecorator", function(opts, params, vars) {
+  vars.titleBarText += " (" +
+    params.group.weight + ")";
+});</pre></dd></dl></li></ul><h3>Interaction</h3><ul class="api"><a name="option-selection" shape="rect"><!----></a><li id="option-selection"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-selection" shape="rect">selection</a></dd><dt class="sig type">Type</dt><dd>Object</dd><dt class="sig extra">Default</dt><dd>null</dd><dt class="desc">Description</dt><dd><p>
+              Gets or sets the group selection. When setting the selection, three types of
+              arguments are accepted:
+            </p><ul><li><tt>String</tt>: the identifier of the group to select.</li><li><tt>[ String ]</tt>: array of identifiers of the groups to select.</li><li><tt>Object</tt>: object with the following properties:
+                <ul><li><tt>selected</tt>: <tt>true</tt> to select groups (default), <tt>false</tt> to deselect groups,</li><li><tt>groups</tt>: an array of group identifiers to select, OR</li><li><tt>all</tt>: set to <tt>true</tt> if the change is to affect all groups.</li></ul></li></ul><p>
+              FoamTree assumes that the identifier of the group is stored in the <tt><a href="api.html#option-id" shape="rect">id</a></tt>
+              property of the group's data object. Please see the <tt><a href="api.html#option-dataObject" shape="rect">dataObject</a></tt> option
+              for data object examples.
+            </p><p><strong>Note: </strong>selection changes affect only the specified groups, selection of
+              other groups remains unchanged.
+            </p><p><strong>Note: </strong>when selection is changed using this option (as opposed to user actions),
+              no events, such as <tt><a href="api.html#event-onGroupSelectionChanging" shape="rect">onGroupSelectionChanging</a></tt> or <tt><a href="api.html#event-onGroupSelectionChanged" shape="rect">onGroupSelectionChanged</a></tt>, will be triggered.
+            </p><p>
+              Getting this option will return an object describing the current selection. The object
+              contains one property, <tt>groups</tt>, containing an array of references
+              to the data objects representing the selected groups.
+            </p></dd><dt class="code">Code examples</dt><dd>Selecting a single group<pre class="brush: js" xml:space="preserve">foamtree.set("selection", "g56");  // group id
+foamtree.set("selection", "1");</pre>Selecting multiple groups<pre class="brush: js" xml:space="preserve">foamtree.set("selection", ["g34", "g35"]);
+foamtree.set("selection", ["2", "3"]);</pre>Deselecting multiple groups<pre class="brush: js" xml:space="preserve">foamtree.set("selection", {
+  groups: ["1", "2", "3", "8"],
+  selected: false
+});</pre>Clearing selection<pre class="brush: js" xml:space="preserve">foamtree.set("selection", { all: true, selected: false });</pre>Reading current selection<pre class="brush: js" xml:space="preserve">foamtree.get("selection");</pre></dd></dl></li><a name="option-open" shape="rect"><!----></a><li id="option-open"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-open" shape="rect">open</a></dd><dt class="sig type">Type</dt><dd>Object</dd><dt class="sig extra">Default</dt><dd>null</dd><dt class="desc">Description</dt><dd><p>
+              Opens or closes groups for browsing. Three types of
+              arguments are accepted:
+            </p><ul><li><tt>String</tt>: the identifier of the group to open or close.</li><li><tt>[ String ]</tt>: array of identifiers of the groups to open or close.</li><li><tt>Object</tt>: object with the following properties:
+                <ul><li><tt><a href="api.html#option-open" shape="rect">open</a></tt>: <tt>true</tt> to open groups (default), <tt>false</tt> close groups,</li><li><tt>groups</tt>: an array of group identifiers to open or close, OR</li><li><tt>all</tt>: set to <tt>true</tt> if the change is to affect all groups.</li></ul></li></ul><p>
+              FoamTree assumes that the identifier of the group is stored in the <tt><a href="api.html#option-id" shape="rect">id</a></tt>
+              property of the group's data object. Please see the <tt><a href="api.html#option-dataObject" shape="rect">dataObject</a></tt> option
+              for data object examples.
+            </p><p><strong>Note: </strong> changes affect only the specified groups, the state of
+              other groups remains unchanged.
+            </p><p><strong>Note: </strong>when groups are open or closed using this option (as
+              opposed to user actions), <tt><a href="api.html#event-onGroupOpenOrClose" shape="rect">onGroupOpenOrClose</a></tt> will not be triggered.
+            </p><p>
+              Getting this option will return an object describing the currently open groups. The object
+              contains one property, <tt>groups</tt>, containing an array of references
+              to the data objects representing the open groups.
+            </p></dd><dt class="code">Code examples</dt><dd>Opening a single group<pre class="brush: js" xml:space="preserve">foamtree.set("open", "g56");  // group id</pre>Opening multiple groups<pre class="brush: js" xml:space="preserve">foamtree.set("selection", ["g34", "g35"]);</pre>Closing multiple groups<pre class="brush: js" xml:space="preserve">foamtree.set("selection", {
+  groups: ["1", "2", "3", "8"],
+  open: false
+});</pre>Closing all groups<pre class="brush: js" xml:space="preserve">foamtree.set("open", { all: true, open: false });</pre>Reading currently open groups<pre class="brush: js" xml:space="preserve">foamtree.get("selection");</pre></dd></dl></li></ul><h3>Image data</h3><ul class="api"><a name="option-imageData" shape="rect"><!----></a><li id="option-imageData"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-imageData" shape="rect">imageData</a></dd><dt class="sig type">Type</dt><dd>String<small>read-only</small></dd><dt class="desc">Description</dt><dd><p>
+              Returns the current visualization image as a <a rel="_blank" href="http://en.wikipedia.org/wiki/Data_URI_scheme"><tt>data:</tt> URL</a> in the PNG format.
+              An object can be passed as the second argument of the <tt><a href="api.html#method-get" shape="rect">get</a></tt> method
+              to specify the format of the image data. The object can have the following
+              properties:
+            </p><ul><li><tt>format</tt>: format of the image data: <tt>image/png</tt> or <tt>image/jpeg</tt></li><li><tt>quality</tt>: if <tt>format</tt> is <tt>image/jpeg</tt>, specifies
+                the desired quality of JPEG compression in the 0..1 range, where 1.0
+                means highest quality and largest image data.
+              </li></ul><p>
+              The visualization image can be used by the application in many different ways.
+              On certain browsers, it is possible to
+              <a rel="_blank" href="http://jsfiddle.net/flyingsheep/wpQtH/">trigger a dialog</a>
+              allowing the user to save the image to the local disk. The image data can also
+              be posted to a server that will process if further, e.g. e-mail it to
+              the requested addresses.
+            </p><p><strong>Note</strong>: if the attribution logo was fetched from a different domain than
+              the page that embeds the visualization, getting the visualization
+              image will not be possible due to <a rel="_blank" href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#security-with-canvas-elements">security constraints</a>.
+            </p></dd><dt class="code">Code examples</dt><dd>Getting visualization image in the PNG format<pre class="brush: js" xml:space="preserve">foamtree.get("imageData");</pre>Getting visualization image in the JPEG format<pre class="brush: js" xml:space="preserve">foamtree.get("imageData", {
+  format: "image/jpeg",
+  quality: 0.7
+});</pre></dd></dl></li></ul><h3>Debug</h3><ul class="api"><a name="option-logging" shape="rect"><!----></a><li id="option-logging"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-logging" shape="rect">logging</a></dd><dt class="sig type">Type</dt><dd>Boolean</dd><dt class="sig extra">Default</dt><dd>false</dd><dt class="desc">Description</dt><dd>
+            Enables logging of debug information to the browser's console.
+          </dd></dl></li><a name="option-times" shape="rect"><!----></a><li id="option-times"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-times" shape="rect">times</a></dd><dt class="sig type">Type</dt><dd>Object<small>read-only</small></dd><dt class="desc">Description</dt><dd><p>
+              A read-only option with information about the duration of visualization drawing.
+              The returned object contains the following properties:
+            </p><ul><li><tt>finalDrawTime</tt>: time (in milliseconds) of the last complete
+                redraw of the visualizationR. Updated during initial and API-triggered
+                <tt><a href="api.html#method-rollout" shape="rect">rollout</a></tt>s and after API-triggered <tt><a href="api.html#method-redraw" shape="rect">redraw</a></tt>s.
+              </li><li><tt>rolloutFramesDrawn</tt>: number of animation frames drawn during
+                the last rollout. Updated during initial and API-triggered <tt><a href="api.html#method-rollout" shape="rect">rollout</a></tt>s.
+              </li><li><tt>rolloutComputationTime</tt>: computation and drawing time (in milliseconds)
+                of all the frames of the last rollout. Updated during initial and API-triggered
+                <tt><a href="api.html#method-rollout" shape="rect">rollout</a></tt>s.
+              </li><li><tt>rolloutTotalTime</tt>: total time (in milliseconds) of the last rollout.
+                Updated during initial and API-triggered <tt><a href="api.html#method-rollout" shape="rect">rollout</a></tt>s.
+              </li></ul><p>
+              The frame rate (FPS, frames per second) of the last rollout can be computed
+              as <tt>rolloutFramesDrawn * 1000 / rolloutTotalTime</tt>. Due to internal throttling,
+              the animation frame rate will not be larger than 60 FPS. The maximum (theoretical)
+              frame rate can be computed as <tt>rolloutFramesDrawn * 1000 / rolloutComputationTime</tt>.
+            </p></dd></dl></li><a name="option-useFastRenderingRoutines" shape="rect"><!----></a><li id="option-useFastRenderingRoutines"><dl class="folded"><dt class="name">Name</dt><dd><a href="#option-useFastRenderingRoutines" shape="rect">useFastRenderingRoutines</a></dd><dt class="sig type">Type</dt><dd>Boolean</dd><dt class="sig extra">Default</dt><dd>browser-specific</dd><dt class="desc">Description</dt><dd>
+            If <tt>true</tt>, FoamTree will use incremental rendering routines do draw the
+            visualization. On certain mobile browsers (such as Safari on Samsung Galaxy S III),
+            optimized rendering may lead to distorted output. On such devices the default
+            value of this option defaults to <tt>false</tt>, which also results in lower
+            animation speeds.
+          </dd></dl></li></ul><h2 id="events">Events</h2><ul class="api"><a name="event-onModelChanged" shape="rect"><!----></a><li id="event-onModelChanged"><dl class="folded"><dt class="name">Name</dt><dd><a href="#event-onModelChanged" shape="rect">onModelChanged</a></dd><dt class="sig type">Type</dt><dd>Function</dd><dt class="signature full">onModelChanged(newDataObject)</dt><dd><p>
+          Called after the visualization has parsed the new data model provided
+          in the <tt><a href="api.html#option-dataObject" shape="rect">dataObject</a></tt> option, but before the new data has been rendered.
+        </p><p>
+          The <tt>newDataObject</tt> argument is the new data object the visualization
+          is about to show. In the context of the callback, <tt>this</tt> points to
+          the involved instance of <tt>CarrotSearchFoamTree</tt>.
+        </p></dd></dl></li><a name="event-onRolloutStart" shape="rect"><!----></a><li id="event-onRolloutStart"><dl class="folded"><dt class="name">Name</dt><dd><a href="#event-onRolloutStart" shape="rect">onRolloutStart</a></dd><dt class="sig type">Type</dt><dd>Function</dd><dt class="signature full">onRolloutStart()</dt><dd><p>
+          Called after FoamTree has prepared the animated rollout and is about
+          to start it. If the application implements some sort of loading
+          indicator, the indicator should be hidden when this event is fired.
+        </p><p>
+          In the context of the callback, <tt>this</tt> points to
+          the involved instance of <tt>CarrotSearchFoamTree</tt>.
+        </p></dd></dl></li><a name="event-onRolloutComplete" shape="rect"><!----></a><li id="event-onRolloutComplete"><dl class="folded"><dt class="name">Name</dt><dd><a href="#event-onRolloutComplete" shape="rect">onRolloutComplete</a></dd><dt class="sig type">Type</dt><dd>Function</dd><dt class="signature full">onRolloutComplete(times)</dt><dd><p>
+          Called after the rollout animation has completed. The <tt><a href="api.html#option-times" shape="rect">times</a></tt>
+          parameter provides basic statistics about the rollout that has just
+          completed. Please see the <tt><a href="api.html#option-times" shape="rect">times</a></tt> option for a detailed description.
+        </p><p>
+          In the context of the callback, <tt>this</tt> points to
+          the involved instance of <tt>CarrotSearchFoamTree</tt>.
+        </p></dd></dl></li><a name="event-onRedraw" shape="rect"><!----></a><li id="event-onRedraw"><dl class="folded"><dt class="name">Name</dt><dd><a href="#event-onRedraw" shape="rect">onRedraw</a></dd><dt class="sig type">Type</dt><dd>Function</dd><dt class="signature full">onRedraw()</dt><dd><p>
+          Called after the internal- or API-triggered redraw of the visualization.
+        </p><p>
+          In the context of the callback, <tt>this</tt> points to
+          the involved instance of <tt>CarrotSearchFoamTree</tt>.
+        </p></dd></dl></li><a name="event-onGroupHover" shape="rect"><!----></a><li id="event-onGroupHover"><dl class="folded"><dt class="name">Name</dt><dd><a href="#event-onGroupHover" shape="rect">onGroupHover</a></dd><dt class="sig type">Type</dt><dd>Function</dd><dt class="signature full">onGroupHover(info)</dt><dd><p>
+          Called after the mouse pointer enters the area covered by a group
+          or leaves the visualization area completely. The callback will
+          be passed one parameter: an object containing the <tt>group</tt>
+          property with a reference to the data object representing the group
+          being hovered or <tt>null</tt> if the mouse pointer left
+          the visualization area.
+        </p><p>
+          In the context of the callback, <tt>this</tt> points to the involved instance
+          of <tt>CarrotSearchFoamTree</tt>.
+        </p></dd></dl></li><a name="event-onBeforeOpenOrClose" shape="rect"><!----></a><li id="event-onBeforeOpenOrClose"><dl class="folded"><dt class="name">Name</dt><dd><a href="#event-onBeforeOpenOrClose" shape="rect">onBeforeOpenOrClose</a></dd><dt class="sig type">Type</dt><dd>Function</dd><dt class="signature full">onBeforeOpenOrClose(info)</dt><dd><p>
+          Called right after some user interaction which would result in opening
+          or closing a group, but before the changes are applied.
+          You can use this event in combination with raw interaction events, such as
+          <tt><a href="api.html#event-onGroupClick" shape="rect">onGroupClick</a></tt>, to change the default actions performed on
+          group click, double click etc.
+        </p><p>
+          The callback will be invoked with one object parameter containing the
+          following properties:
+        </p><ul><li><tt>group</tt>: reference to the data object representing the group
+            that is about to be opened or closed
+          </li><li><tt><a href="api.html#option-open" shape="rect">open</a></tt>: <tt>true</tt> if the group is about to be opened
+          </li></ul><p>
+          If the callback returns <tt>false</tt>, the default behavior of changing
+          the open state is not invoked.
+        </p><p>
+          In the context of the callback, <tt>this</tt> points to the involved instance
+          of <tt>CarrotSearchFoamTree</tt>.
+        </p></dd></dl></li><a name="event-onGroupOpenOrClose" shape="rect"><!----></a><li id="event-onGroupOpenOrClose"><dl class="folded"><dt class="name">Name</dt><dd><a href="#event-onGroupOpenOrClose" shape="rect">onGroupOpenOrClose</a></dd><dt class="sig type">Type</dt><dd>Function</dd><dt class="signature full">onGroupOpenOrClose(info)</dt><dd><p>
+          Called after a group has been opened for browsing or closed. For each
+          involved group, the callback will be invoked with one parameter
+          containing the following properties:
+        </p><ul><li><tt>group</tt>: reference to the data object representing the group
+            that has just been opened or closed
+          </li><li><tt><a href="api.html#option-open" shape="rect">open</a></tt>: <tt>true</tt> if the group has just been opened for
+            browsing of child groups, <tt>false</tt> if the group has just been closed
+          </li></ul><p>
+          In the context of the callback, <tt>this</tt> points to the involved instance
+          of <tt>CarrotSearchFoamTree</tt>.
+        </p></dd></dl></li><a name="event-onBeforeSelection" shape="rect"><!----></a><li id="event-onBeforeSelection"><dl class="folded"><dt class="name">Name</dt><dd><a href="#event-onBeforeSelection" shape="rect">onBeforeSelection</a></dd><dt class="sig type">Type</dt><dd>Function</dd><dt class="signature full">onBeforeSelection(info)</dt><dd><p>
+          Called right after some user interaction which would affect the model's selection
+          (mouse click on a group for example), but before the changes are applied.
+          You can use this event in combination with raw interaction events, such as
+          <tt><a href="api.html#event-onGroupClick" shape="rect">onGroupClick</a></tt>, to change the default actions performed on
+          group click, double click etc.
+        </p><p>
+          The callback will be invoked with one object parameter containing the
+          following properties:
+        </p><ul><li><tt>group</tt>: reference to the data object representing the group
+            that is about to be selected
+          </li></ul><p>
+          If the callback returns <tt>false</tt>, the default behavior of changing
+          selection is not invoked.
+        </p><p>
+          In the context of the callback, <tt>this</tt> points to the involved instance
+          of <tt>CarrotSearchFoamTree</tt>.
+        </p></dd></dl></li><a name="event-onGroupSelectionChanging" shape="rect"><!----></a><li id="event-onGroupSelectionChanging"><dl class="folded"><dt class="name">Name</dt><dd><a href="#event-onGroupSelectionChanging" shape="rect">onGroupSelectionChanging</a></dd><dt class="sig type">Type</dt><dd>Function</dd><dt class="signature full">onGroupSelectionChanging(info)</dt><dd><p>
+          Called during group selection changes. For each selected or deselected group,
+          the callback will be invoked with one parameter containing the following
+          properties:
+        </p><ul><li><tt>group</tt>: reference to the data object representing the group
+            that has just been selected or deselected
+          </li><li><tt>selected</tt>: <tt>true</tt> if the group has just been selected,
+            <tt>false</tt> if the group has just been deselected
+          </li></ul><p>
+          Please note, that in response to one user action, many <tt><a href="api.html#event-onGroupSelectionChanging" shape="rect">onGroupSelectionChanging</a></tt>
+          events may be triggered, e.g. two events with <tt>selected</tt> equal to
+          <tt>false</tt>, and one with <tt>selected</tt> equal to <tt>true</tt>.
+          To obtain a global state of current selection, use the <tt><a href="api.html#event-onGroupSelectionChanged" shape="rect">onGroupSelectionChanged</a></tt>
+          event.
+        </p><p>
+          In the context of the callback, <tt>this</tt> points to the involved instance
+          of <tt>CarrotSearchFoamTree</tt>.
+        </p></dd></dl></li><a name="event-onGroupSelectionChanged" shape="rect"><!----></a><li id="event-onGroupSelectionChanged"><dl class="folded"><dt class="name">Name</dt><dd><a href="#event-onGroupSelectionChanged" shape="rect">onGroupSelectionChanged</a></dd><dt class="sig type">Type</dt><dd>Function</dd><dt class="signature full">onGroupSelectionChanged(info)</dt><dd><p>
+          Called after group selection has changed. The callback will
+          be passed one parameter: an object containing the <tt>groups</tt>
+          property with an array of references to the data objects representing the
+          groups that are currently selected.
+        </p><p>
+          In the context of the callback, <tt>this</tt> points to the involved instance
+          of <tt>CarrotSearchFoamTree</tt>.
+        </p></dd></dl></li><a name="event-onGroupClick" shape="rect"><!----></a><li id="event-onGroupClick"><dl class="folded"><dt class="name">Name</dt><dd><a href="#event-onGroupClick" shape="rect">onGroupClick</a></dd><dt class="sig type">Type</dt><dd>Function</dd><dt class="signature full">onGroupClick(info)</dt><dd><p>
+          Called after a mouse click (or tap gesture) was detected on a group.
+          The callback will be invoked with one object parameter containing
+          the following properties:
+        </p><ul><li><tt>topmostClosedGroup</tt>: reference to the data object representing the topmost
+            (highest hierarchy level) closed group. Use this reference to invoke group
+            open action, if needed.
+          </li><li><tt>bottommostOpenGroup</tt>: reference to the data object representing the bottommost
+            (lowest hierarchy level) open group. Use this reference to invoke group close action,
+            if needed.
+          </li></ul><p>
+          In the context of the callback, <tt>this</tt> points to the involved instance
+          of <tt>CarrotSearchFoamTree</tt>.
+        </p></dd></dl></li><a name="event-onGroupDoubleClick" shape="rect"><!----></a><li id="event-onGroupDoubleClick"><dl class="folded"><dt class="name">Name</dt><dd><a href="#event-onGroupDoubleClick" shape="rect">onGroupDoubleClick</a></dd><dt class="sig type">Type</dt><dd>Function</dd><dt class="signature full">onGroupDoubleClick(info)</dt><dd><p>
+          Called after a double click was detected on a group.
+          The callback will be invoked with one object parameter containing the following properties:
+        </p><ul><li><tt>topmostClosedGroup</tt>: reference to the data object representing the topmost
+            (highest hierarchy level) closed group. Use this reference to invoke group
+            open action, if needed.
+          </li><li><tt>bottommostOpenGroup</tt>: reference to the data object representing the bottommost
+            (lowest hierarchy level) open group. Use this reference to invoke group close action,
+            if needed.
+          </li></ul><p>
+          In the context of the callback, <tt>this</tt> points to the involved instance
+          of <tt>CarrotSearchFoamTree</tt>.
+        </p></dd></dl></li><a name="event-onGroupHold" shape="rect"><!----></a><li id="event-onGroupHold"><dl class="folded"><dt class="name">Name</dt><dd><a href="#event-onGroupHold" shape="rect">onGroupHold</a></dd><dt class="sig type">Type</dt><dd>Function</dd><dt class="signature full">onGroupHold(info)</dt><dd><p>
+          Called after a click-and-hold was detected on a group.
+          The callback will be invoked with one object parameter containing the following properties:
+        </p><ul><li><tt>topmostClosedGroup</tt>: reference to the data object representing the topmost
+            (highest hierarchy level) closed group. Use this reference to invoke group
+            open action, if needed.
+          </li><li><tt>bottommostOpenGroup</tt>: reference to the data object representing the bottommost
+            (lowest hierarchy level) open group. Use this reference to invoke group close action,
+            if needed.
+          </li></ul><p>
+          In the context of the callback, <tt>this</tt> points to the involved instance
+          of <tt>CarrotSearchFoamTree</tt>.
+        </p></dd></dl></li></ul></div><div id="copyright">
+      © 2002-2013 <a href="http://carrotsearch.com" shape="rect">Carrot Search</a></div><script src="../js/sh/sh.js" type="text/javascript"><!----></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+    
+      SyntaxHighlighter.defaults.light = false;
+      SyntaxHighlighter.defaults.gutter = false;
+      SyntaxHighlighter.all();
+    
+    //]]></script><script src="../js/jquery-1.8.2.min.js" type="text/javascript"><!----></script><script src="../js/carrotsearch.foldable.js" type="text/javascript"><!----></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+    
+      $(document).ready(function() {
+        if (!foamtree) {
+          $("a.run").remove();
+          $("a[href='settings.html']").each(function() {
+            $(this).replaceWith("<span>" + $(this).text() + "</span>");
+          });
+        }
+
+        $("ul.api > li > dl > dt.name").next().foldable();
+        $("h1").foldable();
+      
+        // Open external links in a new window
+        $("a[rel = '_blank']").attr("target", "_blank");
+        
+        // Unfold parent sections before going to option cross-links
+        $("tt > a").click(function() {
+          var href = $(this).attr("href");
+          var indexOfHash = href.indexOf('#');
+          if (indexOfHash >= 0) {
+            unfold(href.substring(indexOfHash + 1));
+          }
+        });
+
+        unfold(window.location.hash.substring(1));
+
+        $("a[href $= '#index-source']").click(function() {
+          window.open("view-source:" + this.href);
+          return false;
+        });
+
+        function unfold(optionName) {
+          $("a[name = '" + optionName + "'] + li > dl").parents(".folded").andSelf().removeClass("folded").addClass("unfolded");
+        }
+      });
+      if (window.parent.panelContentChanged) window.parent.panelContentChanged("api");
+    
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N65972").click(function() {
+var CarrotSearchFoamTree = window.parent.CarrotSearchFoamTree;
+//[[[start]]]
+console.log(CarrotSearchFoamTree.supported);
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66039").click(function() {
+//[[[start]]]
+foamtree.set("dataObject", { groups: [
+  { label: "Group 1", weight: 3, groups: [
+    { label: "Group 1.1", weight: 2 },
+    { label: "Group 1.2", weight: 1 } ] },
+  { label: "Group 2", weight: 1 }
+] });
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66048").click(function() {
+//[[[start]]]
+$.ajax({
+  url: "http://api.usatoday.com/open/census/loc?api_key=nqjr52fpvsu8gs97tgnkyzfx",
+  dataType: "jsonp",
+  jsonpCallback: "callback",
+  success: function(data) {
+    var groups = [ ];
+    var states = data.response;
+    var pow = 0.7;
+    for (var i = 0; i < states.length; i++) {
+      var s = states[i];
+      groups.push({
+        label: s.Placename,
+        weight: s.Pop,
+        groups: [
+          // Ethnic data is very varied, we rise it
+          // to the power of 0.8 to make the
+          // differences less pronounced.
+          { label: "Hispanic",
+            weight: Math.pow(s.PctHisp, pow) },
+          { label: "White",
+            weight: Math.pow(s.PctNonHispWhite, pow) },
+          { label: "Black",
+            weight: Math.pow(s.PctBlack, pow) },
+          { label: "Indian",
+            weight: Math.pow(s.PctAmInd, pow) },
+          { label: "Asian",
+            weight: Math.pow(s.PctAsian, pow) },
+          { label: "Hawaiian",
+            weight: Math.pow(s.PctNatHawOth, pow) }
+        ]
+      })
+    }
+    foamtree.set("dataObject", { groups: groups });
+  }
+});
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66069").click(function() {
+//[[[start]]]
+$.ajax({
+  url: "../../../../data/legacy.xml",
+  dataType: "xml",
+  success: function(data) {
+    // Converts any "group" XML elements
+    // under node to their JSON counterparts
+    // for the visualization. Recursive.
+    function convert($node) {
+      var result = {};
+      var $titles = $node.children("title");
+      if ($titles.length > 0) {
+        result.label = $titles.children("phrase").text();
+      }
+      if ($node.attr("score")) {
+        result.score = $node.attr("score");
+      }
+      if ($node.attr("id")) {
+        result.id = $node.attr("id");
+      }
+      var $subgroups = $node.children("group");
+      if ($subgroups.length > 0) {
+        result.groups = $subgroups.map(function(i, group) {
+          return convert($(group));
+        }).get();
+      }
+      return result;
+    }
+
+    // Use jquery for traversals to make it simpler.
+    circles.set("dataObject",
+      convert($(data).children("searchresult")));
+  }
+});
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66076").click(function() {
+//[[[start]]]
+foamtree.set("dataObject", null);
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66101").click(function() {
+//[[[start]]]
+foamtree.set({
+  attributionText: "Ingenious!",
+  attributionLogo: "data:image/png;base64,\
+iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/\
+9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdh\
+cmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAKgSURBVD\
+jLlZLrS1NxGMd90ZvovdEfEBEUEhZIb0xMjdyLIuyG\
+kiHGUFKydFKKJiRegjIyFJRwojMxzfJSaVOYeTfxtp\
+SNuZ1tXnY2z27nsss5334uWloG9uLD7/A7z/fzPPx4\
+IgBE7ISl3qWyelUvu9JIueZqeOdUmcCMFDgcQ3fntj\
+SK0j/rwx+csesIZ3jbL1j6EbCPIej5DpE3QRIoBJ3L\
+EFb74BjIxkbXVYNdrTixS8Ca3h/y6pSTfloD0UcRjC\
+S8BJGbRdA7QRgjd1pIfhruyeewKOMdm+rCw2GBV1tX\
+KZh7SIEVoqAjpwVS0AlIvhBSkCGyeQRcPYDogO1DNi\
+xvrveFBa6ZCkuAmSe1OtJpFVLATkJboWCIAE3+GYng\
+I6ENgnUK+hcxfFiw9fWRT+RWEWTHEeRmyPhaMvYCgu\
+5ZEpgkbzCCgPszBNsr8NY8iF4Ky5WnpLDArs41+zYn\
+SPdF8OYi0qEcTHc6mF45mJ4M2Ftl4C1lYPU34KerwF\
+NTWKmO/j2BfbiwghmvJuPawZsUsNVHgTPlEx6ANcjJ\
+eR9r5QfhWUqEJOlhbc+FoV42FBY4R0sPbPbKlz2LLe\
+QB9aCbYkJhzpIFlkoDZ8zDRk0kRHYYrm8d0JYeEyyd\
+uUd37QH9pTBqvSOV9iy0wtmZ+VNAOm+HOeM92JtlYD\
+QN0JYcD1BtmTf/WqRtbJ/yTxtUt9fXGhPBq5MhriVB\
+tMYhoLkMQ1Ek5sqi3eb2O4l7buIvhlRPkmsfZ/ibax\
++iruosnpacQUFOOq7Fn5TUypJz/1zlnRQr5JSypRVK\
+ZRvq6htR/ewlriTH03vV7ilQ5NwaHRgchM1GY3p6Bq\
++bmpEii9XtWzCgqkhLuXSBTUg4L8XFxUoXk2K57obi\
+rH0L/ocfNQ8V8wE+uE0AAAAASUVORK5CYII="
+});
+foamtree.redraw();
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66108").click(function() {
+//[[[start]]]
+foamtree.set({
+  attributionText: null,
+  attributionLogo: null
+});
+foamtree.redraw();
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66123").click(function() {
+//[[[start]]]
+foamtree.set({
+  rainbowStartColor: "hsla(120, 100%, 50%, 0.8)",
+  rainbowEndColor: "hsla(270, 100%, 50%, 0.2)",
+  groupColorDecorator: null
+});
+foamtree.redraw();
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66135").click(function() {
+//[[[start]]]
+var vis = window.parent.document
+  .getElementById(foamtree.get("id"));
+var width = vis.clientWidth,
+    height = vis.clientHeight;
+
+foamtree.set("groupColorDecorator",
+  function(opts, params, vars) {
+    var red = Math.round(255 *
+      (1 - params.polygonCenterX / width));
+    var green = Math.round(255 *
+      (1 - params.polygonCenterY / height));
+    vars.groupColor.model = "rgb";
+    vars.groupColor.r = red;
+    vars.groupColor.g = green;
+    vars.groupColor.b = 32;
+    vars.groupColor.a = 0.8;
+    vars.labelColor = "auto";
+  });
+foamtree.redraw();
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66141").click(function() {
+//[[[start]]]
+var cnt = 0;
+foamtree.set("groupColorDecorator",
+  function(opts, params, vars) {
+    var odd = (cnt++ % 2) == 0;
+    vars.groupColor.model = "rgb";
+    vars.groupColor.r = odd ? 255 : 0;
+    vars.groupColor.g = odd ? 255 : 0;
+    vars.groupColor.b = odd ? 255 : 0;
+    vars.groupColor.a = 0.8;
+    vars.labelColor = "auto";
+  });
+foamtree.redraw();
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66147").click(function() {
+//[[[start]]]
+// Base colors in HSL
+var baseColors = [
+  "hsl(  4.68,  90.59%, 83.33%)",
+  "hsl(207.50,  46.15%, 79.61%)",
+  "hsl(108.95,  48.72%, 84.71%)",
+  "hsl(285.60,  31.65%, 84.51%)",
+  "hsl( 34.77,  97.78%, 82.35%)",
+  "hsl( 60.00, 100.00%, 90.00%)",
+  "hsl( 40.50,  43.48%, 81.96%)",
+  "hsl(329.14,  89.74%, 92.35%)"
+];
+foamtree.set("groupColorDecorator",
+  function(opts, params, vars) {
+    if (params.level != 0) {
+      // Leave the generation of lower-level
+      // colors to FoamTree.
+      return;
+    }
+    vars.groupColor = baseColors[
+      params.index % baseColors.length];
+    vars.labelColor = "auto";
+  });
+foamtree.redraw();
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66159").click(function() {
+//[[[start]]]
+var frame = 0;
+foamtree.set("groupColorDecorator", function(opts, params, vars) {
+  vars.groupColor.h = (vars.groupColor.h + frame) % 360;
+  vars.labelColor = "auto";
+});
+
+// Redraw the visualization periodically.
+// Although we use setTimeout() here, use
+// the requestAnimationFrame() when possible.
+setTimeout(function redraw() {
+  if (frame > 360) { // stop after a while
+    frame = 0;
+    return;
+  }
+  foamtree.redraw();
+  frame += 5;
+  setTimeout(redraw, 16); // next frame
+}, 16);
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66171").click(function() {
+//[[[start]]]
+foamtree.set("groupLabelDecorator", function(opts, params, vars) {
+  vars.labelText += " (" +
+    params.group.weight + ")";
+});
+foamtree.redraw();
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66183").click(function() {
+//[[[start]]]
+foamtree.set("titleBarDecorator", function(opts, params, vars) {
+  vars.titleBarText += " (" +
+    params.group.weight + ")";
+
+  // Additionally, display in red
+  vars.titleBarTextColor = {
+    model: "rgb",
+    r: 255, g: 0, b: 0
+  };
+});
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66198").click(function() {
+//[[[start]]]
+foamtree.set({
+  onGroupHover: function (info) {
+    console.log("onGroupHover", info.group);
+  },
+
+  onGroupOpenOrClose: function (info) {
+    console.log("onGroupOpenOrClose",
+      info.group);
+  },
+
+  onGroupSelectionChanged: function (info) {
+    console.log("onGroupSelectionChanged",
+      info.groups);
+  }
+});
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66238").click(function() {
+//[[[start]]]
+foamtree.set({
+  onBeforeSelection: function() {
+    // Cancel the default action
+    return false;
+  },
+  onGroupDoubleClick: function(info) {
+    if (info.topmostClosedGroup) {
+      var selection = this.get("selection").groups;
+
+      // Clear previous selection
+      this.set("selection",
+        { all: true, selected: false });
+
+      // If group was previously unselected,
+      // select it.
+      if (selection.indexOf(info.topmostClosedGroup) < 0) {
+        this.set("selection",
+          info.topmostClosedGroup.id);
+      }
+    }
+  }
+});
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66258").click(function() {
+//[[[start]]]
+foamtree.set("selection", "0");  // group id
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66264").click(function() {
+//[[[start]]]
+foamtree.set("selection", ["2", "3", "4"]);
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66270").click(function() {
+//[[[start]]]
+foamtree.set("selection", {
+  groups: ["1", "2", "3"],
+  selected: false
+});
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66276").click(function() {
+//[[[start]]]
+foamtree.set("selection", { all: true, selected: false });
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66288").click(function() {
+//[[[start]]]
+console.log(foamtree.get("selection"));
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66300").click(function() {
+//[[[start]]]
+foamtree.set("open", "0");
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66304").click(function() {
+//[[[start]]]
+foamtree.set("open", ["11", "19"]);
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66308").click(function() {
+//[[[start]]]
+foamtree.set("open", { all: true, open: false });
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66312").click(function() {
+//[[[start]]]
+console.log(foamtree.get("open"));
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66347").click(function() {
+//[[[start]]]
+console.log(foamtree.get("imageData").substring(0, 100));
+//[[[end]]]
+return false;
+});
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      $("#N66362").click(function() {
+//[[[start]]]
+foamtree.set("logging", true);
+//[[[end]]]
+return false;
+});
+    //]]></script></body></html>

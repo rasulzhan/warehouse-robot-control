@@ -1,0 +1,137 @@
+/**
+ * The basic layout of Carrot Search Circles demo pages.
+ */
+
+body {
+  background-color: #000;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+.dimmed #visualization,
+.dimmed #reset,
+.dimmed #back,
+.dimmed #hints {
+  opacity: 0;
+  -webkit-transition-duration: 0s;
+  -o-transition-duration: 0s;
+  -moz-transition-duration: 0s;
+}
+
+#visualization,
+#reset,
+#back,
+#hints {
+  -webkit-transition-property: opacity;
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-property: opacity;
+  -moz-transition-duration: 0.3s;
+  -o-transition-property: opacity;
+  -o-transition-duration: 0.3;
+}
+
+/** Visualization area */
+#visualization {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  /**
+   * Set the width of the FoamTree element 1 pixel less than
+   * the total screen width. This gives a huge performance
+   * boost on iPad with Retina.
+   */
+  left: 1px;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+#hints {
+  background-color: #000;
+  font-size: 20px;
+  color: white;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: -1px; /* Fixes the ugly white line on Safari/Android */
+  left: 0;
+  right: 0;
+  padding: 0 0 0 5px;
+}
+
+#reset, #back {
+  display: none;
+  position: absolute;
+  left: 3px;
+  bottom: 0;
+  color: #fff;
+  background-color: #333;
+  border-radius: 4px;
+}
+
+@media screen and (orientation:portrait) and (max-width: 767px) {
+  #hints, #reset, #back {
+    height: 6%;
+    line-height: 160%;
+  }
+  #reset, #back {
+    padding: 0 2%;
+  }
+  #visualization {
+    bottom: 6%;
+  }
+}
+
+@media screen and (orientation:portrait) and (min-width: 768px) {
+  #hints, #reset, #back {
+    height: 5%;
+    line-height: 158%;
+  }
+  #reset, #back {
+    padding: 0 2%;
+  }
+  #visualization {
+    bottom: 5%;
+  }
+}
+
+
+/* Landscape */
+@media screen and (orientation:landscape) and (max-width: 1023px) {
+  #hints, #reset, #back {
+    height: 11%;
+    line-height: 145%;
+  }
+  #reset, #back {
+    padding: 0 1%;
+  }
+  #visualization {
+    bottom: 11%;
+  }
+}
+
+@media screen and (orientation:landscape) and (min-width: 1024px) {
+  #hints, #reset, #back {
+    height: 6%;
+    line-height: 145%;
+  }
+  #reset, #back {
+    padding: 0 1%;
+  }
+  #visualization {
+    bottom: 6%;
+  }
+}
+
+
+.hidden {
+  visibility: hidden;
+}

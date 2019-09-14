@@ -1,0 +1,14 @@
+modelDataAvailable({"groups":[
+  {"label":"Овощи", "weight":15, "groups":[
+    {"label":"Лук", "weight":9, "id":"1"},
+    {"label":"Картофель", "weight":1, "id":"2"},
+    {"label":"Капуста", "weight":3, "id":"3"},
+    {"label":"Перец", "weight":2, "id":"4"}
+  ], "id":"0"},
+  {"label":"Фрукты", "weight":11, "groups":[
+    {"label":"Яблоки", "weight":3, "id":"12"},
+    {"label":"Груши", "weight":3, "id":"13"},
+    {"label":"Бананы", "weight":2, "id":"14"},
+    {"label":"Мандарин", "weight":3, "id":"15"},
+  ], "id":"11"}
+]});

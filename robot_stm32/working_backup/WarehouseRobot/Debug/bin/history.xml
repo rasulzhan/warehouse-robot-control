@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<history>
+   <processor signature="arm-none-eabi-gcc -O0 -nostartfiles -Map=WarehouseRobot.map -mcpu=cortex-m3 -mthumb -LC:\CooCox\CoIDE\workspace\WarehouseRobot --gc-sections -TC:\CooCox\CoIDE\workspace\WarehouseRobot\link.ld -g -L..\.. -lm">
+      <target file="WarehouseRobot.elf" lastModified="13e31eefe5a">
+         <source file="..\obj\semihosting.o" lastModified="13e31eef3ad"/>
+         <source file="..\obj\stm32f10x_tim.o" lastModified="13e31eef48c"/>
+         <source file="..\obj\startup_stm32f10x_md_vl.o" lastModified="13e31eef4c1"/>
+         <source file="..\obj\core_cm3.o" lastModified="13e31eef4fb"/>
+         <source file="..\obj\system_stm32f10x.o" lastModified="13e31eef53d"/>
+         <source file="..\obj\stm32f10x_pwr.o" lastModified="13e31eef57e"/>
+         <source file="..\obj\stm32f10x_gpio.o" lastModified="13e31eef5d1"/>
+         <source file="..\obj\stm32f10x_dac.o" lastModified="13e31eef61f"/>
+         <source file="..\obj\main.o" lastModified="13e31eef91f"/>
+         <source file="..\obj\printf.o" lastModified="13e31eef97e"/>
+         <source file="..\obj\stm32f10x_rcc.o" lastModified="13e31eef9db"/>
+         <source file="..\obj\hd44780_stm32f10x.o" lastModified="13e31eefa2c"/>
+         <source file="..\obj\hd44780.o" lastModified="13e31eefaba"/>
+         <source file="..\obj\stm32f10x_exti.o" lastModified="13e31eefafe"/>
+         <source file="..\obj\stm32f10x_adc.o" lastModified="13e31eefb6d"/>
+         <source file="..\obj\stm32f10x_usart.o" lastModified="13e31eefbd1"/>
+         <source file="..\obj\sh_cmd.o" lastModified="13e31eefbd9"/>
+         <source file="..\obj\syscalls.o" lastModified="13e31eefc0f"/>
+         <source file="..\obj\stm32f10x_dma.o" lastModified="13e31eefc54"/>
+      </target>
+   </processor>
+</history>

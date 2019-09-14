@@ -1,0 +1,373 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Carrot Search FoamTree - Visual settings panel</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><link rel="stylesheet" type="text/css" href="../css/sh/sh.css"/><link rel="stylesheet" type="text/css" href="../css/common.css"/><link rel="stylesheet" type="text/css" href="../css/settings.css"/><link rel="stylesheet" type="text/css" href="../css/colorpicker.css"/><link rel="stylesheet" type="text/css" href="../css/ui-lightness/jquery-ui-1.9.1.custom.css"/><meta name="description" content="Settings panel of Carrot Search FoamTree visualization. FoamTree is a JavaScript/HTML5 tree map visualization for hierarchical data structures."/></head><body class="dark panel"><script type="text/javascript" xml:space="preserve">//<![CDATA[
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-317750-2']);
+      _gaq.push(['_trackPageview']);
+    
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+      })();//]]></script><p>
+      You can use this panel to try <em class="brand">Carrot Search FoamTree</em> with different
+      data sets and experiment with its visual settings.
+    </p><form id="settings-form" action="" method="get" enctype="application/x-www-form-urlencoded"><div>Loading...</div></form><script src="../js/sh/sh.js" type="text/javascript"><!----></script><script src="../js/jquery-1.8.2.min.js" type="text/javascript"><!----></script><script src="../js/carrotsearch.settings.ui.min.js" type="text/javascript"><!----></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+    
+      SyntaxHighlighter.defaults.light = false;
+      SyntaxHighlighter.defaults.gutter = false;
+    
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+    
+      var limitedDemo = true;
+    
+    //]]></script><script type="text/javascript" xml:space="preserve">//<![CDATA[
+    
+      $(document).ready(function() {
+        var foamtree;
+        try {
+          foamtree = window.parent.foamtree;
+        } catch (e) {
+           // ignored
+        }
+        if (!foamtree) {
+          return;
+        }
+
+        // Reset color model to the defaults
+        if (foamtree.get("groupColorDecorator")) {
+          foamtree.set("groupColorDecorator", null);
+          foamtree.redraw();
+        }
+
+        $("#settings-form").html("");
+        $("#settings-form").datasets({
+          legend: "Data set",
+          datasets: { 
+            searchResults: {
+              label: "Search results for <em>data mining</em>",
+              urls: {
+                "../../../../data/data-mining-100-topic-flat.jsonp": "100 hits by topic, flat",
+                "../../../../data/data-mining-500-topic-flat.jsonp": "500 hits by topic, flat",
+                "../../../../data/data-mining-100-topic-hierarchical.jsonp": "100 hits by topic, hierarchical",
+                "../../../../data/data-mining-500-topic-hierarchical.jsonp": "500 hits by topic, hierarchical",
+                "../../../../data/data-mining-100-url-hierarchical.jsonp": "100 hits by URL, hierarchical",
+                "../../../../data/data-mining-500-url-hierarchical.jsonp": "500 hits by URL, hierarchical"
+              }
+            },
+        
+            synthetic: {
+              label: "Synthetic data sets",
+              urls: {
+                "../../../../data/full-3-level.jsonp": "3-level full hierarchy",
+                "../../../../data/random-3-level.jsonp": "3-level random hierarchy",
+                "../../../../data/multilingual.jsonp": "Multilingual content",
+                "../../../../data/degenerate-content.jsonp": "Degenerate content"
+              }
+            }
+          },
+          controls: {
+            pasteJson: true
+          },
+          onChange: function(dataset, type) {
+            if (type == "json") {
+              foamtree.set("dataObject", dataset);
+            }
+          },
+          onLoadingStart: function() {
+            window.parent.CarrotSearchDemoHelper.loading(true);
+          }
+        });
+
+        var rolloutOptions = {
+          useFastRenderingRoutines: true,
+          siblingRevealingParallelism: true,
+          childRevealingParallelism: true,
+          rolloutType: true,
+          rolloutRate: true,
+          rolloutSpeed: true,
+          groupsVisibleAtRolloutStart: true,
+          explodeDistance: true,
+          drawLabelsDuringRollout: true,
+          roundBordersDuringRollout: true,
+          fadeInTime: true,
+          fadeOutTime: true
+        };
+
+        $("#settings-form").settings({
+          help: carrotSearchVisualizationHelp,
+          metadata: {
+            appearance: {
+              label: "Appearance",
+              settings: {
+                backgroundColor: {
+                  type: "color",
+                  model: "css-rgba",
+                  immediate: true,
+                  label: "Background color"
+                }
+              }
+            },
+
+            groupColors: {
+              label: "Group colors",
+              settings: {
+                rainbowStartColor: {
+                  type: "color",
+                  model: "css-hsla",
+                  immediate: true,
+                  label: "Rainbow start color"
+                },
+                rainbowEndColor: {
+                  type: "color",
+                  model: "css-hsla",
+                  immediate: true,
+                  label: "Rainbow end color"
+                },
+                labelLightColor: {
+                  type: "color",
+                  model: "css-rgba",
+                  immediate: true,
+                  label: "Label light color"
+                },
+                labelDarkColor: {
+                  type: "color",
+                  model: "css-rgba",
+                  immediate: true,
+                  label: "Label dark color"
+                },
+                labelColorThreshold:         { type: "number", model: "float", min: 0.0, max: 1, step: 0.01, immediate: true, label: "Label color threshold" }
+              }
+            },
+
+            groupFill: {
+              label: "Group fill",
+              settings: {
+                groupGradientType: {
+                  type: "enum",
+                  label: "Gradient type",
+                  values: {
+                    "none": "none",
+                    "lightening": "lightening",
+                    "darkening": "darkening"
+                  }
+                },
+                groupGradientStrength:       { type: "number", model: "float", min: 0.0, max: 1, step: 0.01, immediate: true, label: "Gradient strength" },
+                groupGradientRadius:         { type: "number", model: "float", min: 0.0, max: 1, step: 0.01, immediate: true, label: "Gradient radius" },
+                groupOverlayOpacity:         { type: "number", model: "float", min: 0, max: 1, step: 0.01, immediate: true, label: "Group overlay opacity" }
+              }
+            },
+
+            groupBorders: {
+              label: "Group borders",
+              settings: {
+                groupBorderWidth:            { type: "number", model: "int", min: 0, max: 30, step: 1, immediate: true, label: "Border width" },
+                groupInsetWidth:             { type: "number", model: "int", min: 0, max: 30, step: 1, immediate: true, label: "Parent inset width" },
+                groupBorderRadius:           { type: "number", model: "float", min: 0.0, max: 1, step: 0.01, immediate: true, label: "Border radius" },
+                groupBorderWidthScaling:     { type: "number", model: "float", min: 0.5, max: 1, step: 0.01, immediate: true, label: "Border width scaling" }
+              }
+            },
+
+            groupLabels: {
+              label: "Group labels",
+              settings: {
+                groupFontFamily:             { type: "font", label: "Font family" },
+                fontSizeUnit: {
+                  type: "enum",
+                  label: "Font size unit",
+                  values: {
+                    "": "pixels",
+                    "%": "% of available space"
+                  }
+                },
+                groupFontSizes: {
+                  type: "range",
+                  model: "int",
+                  label: "Label font size",
+                  min: 2,
+                  max: 100,
+                  step: 1,
+                  lower: "groupMinFontSize",
+                  upper: "groupMaxFontSize",
+                  immediate: true
+                },
+                groupMaxTotalLabelHeight:    { type: "number", model: "float", min: 0.05, max: 1.0, step: 0.01, immediate: true, label: "Maximum total label height" },
+                groupLinePadding:            { type: "number", model: "int", min: 0, max: 20, step: 1, immediate: true, label: "Label line padding" }
+              }
+            },
+
+            groupDecoration: {
+              label: "Group decoration",
+              settings: {
+                groupSelectionColor:         { type: "color", model: "css-rgba", immediate: true, label: "Selection color" },
+                groupSelectionOutlineColor:  { type: "color", model: "css-rgba", immediate: true, label: "Selection outline color" },
+                groupHoverColor:             { type: "color", model: "css-rgba", immediate: true, label: "Hover color" },
+                groupHoverOutlineColor:      { type: "color", model: "css-rgba", immediate: true, label: "Hover outlione color" }
+              }
+            },
+
+            layout: {
+              label: "Layout",
+              settings: {
+                aspectRatioImprovementSteps: { type: "number", model: "int", min: 0, max: 50, step: 1, immediate: true, label: "Aspect ratio improvement steps" },
+                minGroupDiameter:            { type: "number", model: "int", min: 0, max: 200, step: 1, immediate: true, label: "Mininum group diameter" },
+                groupWeightScaling:          { type: "number", model: "float", min: 0.00, max: 10, step: 0.01, immediate: true, label: "Group weight scaling" },
+                showZeroWeightGroups:        { type: "boolean", label: "Show zero-weight groups" }
+              }
+            },
+
+            rollout: {
+              label: "Rollout",
+              settings: {
+                rolloutType: {
+                  type: "enum",
+                  label: "Rollout type",
+                  values: {
+                    "auto": "auto",
+                    "explode": "explode",
+                    "fadein": "fadein",
+                    "none": "none"
+                  }
+                },
+                rolloutSpeed:                { type: "number", model: "int", min: 1, max: 10, step: 1, label: "Rollout speed" },
+                rolloutRate:                 { type: "number", model: "int", min: 1, max: 5, step: 1, label: "Rollout rate" },
+                siblingRevealingParallelism: { type: "number", model: "float", min: 0, max: 1, step: 0.01, label: "Sibling revealing parallelism" },
+                childRevealingParallelism:   { type: "number", model: "float", min: 0, max: 1, step: 0.01, label: "Child revealing parallelism" },
+                groupsVisibleAtRolloutStart: { type: "number", model: "float", min: 0, max: 1, step: 0.01, label: "Groups visible at rollout start" },
+                explodeDistance:             { type: "number", model: "float", min: 0, max: 1, step: 0.01, label: "Explosion distance" },
+                fadeInTime:                  { type: "number", model: "float", min: 0, max: 5, step: 0.01, label: "Fade in time" },
+                fadeOutTime:                 { type: "number", model: "float", min: 0, max: 5, step: 0.01, label: "Fade out time" },
+                roundBordersDuringRollout:   { type: "boolean", label: "Round borders during rollout" },
+                drawLabelsDuringRollout:     { type: "boolean", label: "Draw labels during rollout" }
+              }
+            },
+
+            attribution: {
+              label: "Attribution",
+              settings: {
+                attributionText:             { type: "string", label: "Attribution text", limited: limitedDemo },
+                attributionLogo:             { type: "string", label: "Attribution logo", limited: limitedDemo },
+                attributionUrl:              { type: "string", label: "Attribution URL", limited: limitedDemo }
+              }
+            },
+
+            titleBar: {
+              label: "Title bar",
+              settings: {
+                maxLabelSizeForTitleBar:      { type: "number", model: "int", min: 0, max: 100, step: 1, label: "Max label size for title bar" },
+                titleBarFontFamily:           { type: "font", label: "Title bar font family" },
+                titleBarBackgroundColor:      { type: "color", model: "css-rgba", label: "Title bar background color" },
+                titleBarTextColor:            { type: "color", model: "css-rgba", label: "Title bar text color" },
+                titleBarFontSizes: {
+                  type: "range",
+                  model: "int",
+                  label: "Title bar font size",
+                  min: 2,
+                  max: 100,
+                  step: 1,
+                  lower: "titleBarMinFontSize",
+                  upper: "titleBarMaxFontSize"
+                },
+                titleBarTextPaddingLeftRight: { type: "number", model: "int", min: 0, max: 100, step: 1, label: "Title bar left/right padding" },
+                titleBarTextPaddingTopBottom: { type: "number", model: "int", min: 0, max: 100, step: 1, label: "Title bar top/bottom padding" }
+              }
+            },
+
+            actions: {
+              label: "Actions",
+              settings: {
+                expandCollapse: {
+                  type: "links",
+                  label: "Open / close all groups",
+                  links: {
+                    "open all groups": function() {
+                      foamtree.set("open", { all: true, open: true });
+                      return false;
+                    },
+                    "close all groups": function() {
+                      foamtree.set("open", { all: true, open: false });
+                      return false;
+                    }
+                  }
+                }
+              }
+            },
+
+            debug: {
+              label: "Debug",
+              settings: {
+                logging:                     { type: "boolean", label: "Logging" },
+                useFastRenderingRoutines:    { type: "boolean", label: "Use fast rendering routines" }
+              }
+            }
+          },
+          values: $.extend({}, foamtree.get(), {fontSizeUnit: "%"}),
+          defaults: foamtree.get(null),
+          onChange: function(changedOptions) {
+            if (foamtree.set.apply(foamtree, arguments) == 0) {
+              return;
+            }
+
+            var rollout = false;
+            $.each(changedOptions, function (key) {
+              if (rolloutOptions[key]) {
+                rollout = true;
+                return false;
+              }
+            });
+
+            if (rollout) {
+              foamtree.rollout();
+            } else {
+              foamtree.redraw();
+            }
+          },
+          ignoredInExportToJs: {
+            id: true,
+            dataObject: true
+          },
+          fontSizeProperties: {
+            groupMinFontSize: true,
+            groupMaxFontSize: true
+          }
+        });
+
+        $("#settings-form").framerate({
+          source: foamtree
+        });
+
+        $("#settings-form").eventlog({
+          source: foamtree,
+          events: ["onModelChanged", "onRolloutStart", "onRolloutComplete",
+                   "onBeforeSelection", "onGroupSelectionChanging", "onGroupSelectionChanged",
+                   "onBeforeOpenOrClose", "onGroupOpenOrClose",
+                   "onGroupHover", "onRedraw",
+                   "onGroupClick", "onGroupDoubleClick", "onGroupHold"],
+          optional: { "onGroupHover": true, "onGroupSelectionChanging": true, "onRedraw": true },
+          piggybackEvents: {
+            onRedraw: function() {
+              $("#settings-form").framerate({
+                source: foamtree,
+                update: true
+              });
+            },
+            onRolloutComplete: function() {
+              $("#settings-form").framerate({
+                source: foamtree,
+                update: true
+              });
+            }
+          }
+        });
+        
+        $("#settings-form").debug({ });
+
+        $("#settings-form").submit(function() { 
+          return false;
+        });
+
+        $("#settings-form legend").foldable();
+      });
+      
+      if (window.parent.panelContentChanged) window.parent.panelContentChanged("settings");
+    
+    //]]></script></body></html>

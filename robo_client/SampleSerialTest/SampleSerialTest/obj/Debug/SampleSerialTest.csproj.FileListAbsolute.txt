@@ -1,0 +1,5 @@
+c:\users\rasulzhan\documents\visual studio 2012\Projects\SampleSerialTest\SampleSerialTest\bin\Debug\SampleSerialTest.exe.config
+c:\users\rasulzhan\documents\visual studio 2012\Projects\SampleSerialTest\SampleSerialTest\bin\Debug\SampleSerialTest.exe
+c:\users\rasulzhan\documents\visual studio 2012\Projects\SampleSerialTest\SampleSerialTest\bin\Debug\SampleSerialTest.pdb
+c:\users\rasulzhan\documents\visual studio 2012\Projects\SampleSerialTest\SampleSerialTest\obj\Debug\SampleSerialTest.exe
+c:\users\rasulzhan\documents\visual studio 2012\Projects\SampleSerialTest\SampleSerialTest\obj\Debug\SampleSerialTest.pdb

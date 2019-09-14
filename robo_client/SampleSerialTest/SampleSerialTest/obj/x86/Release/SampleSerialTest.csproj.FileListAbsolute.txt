@@ -1,0 +1,6 @@
+c:\users\rasulzhan\documents\visual studio 2012\Projects\SampleSerialTest\SampleSerialTest\bin\x86\Release\SampleSerialTest.exe.config
+c:\users\rasulzhan\documents\visual studio 2012\Projects\SampleSerialTest\SampleSerialTest\bin\x86\Release\SampleSerialTest.exe
+c:\users\rasulzhan\documents\visual studio 2012\Projects\SampleSerialTest\SampleSerialTest\bin\x86\Release\SampleSerialTest.pdb
+c:\users\rasulzhan\documents\visual studio 2012\Projects\SampleSerialTest\SampleSerialTest\obj\x86\Release\SampleSerialTest.exe
+c:\users\rasulzhan\documents\visual studio 2012\Projects\SampleSerialTest\SampleSerialTest\obj\x86\Release\SampleSerialTest.pdb
+c:\users\rasulzhan\documents\visual studio 2012\Projects\SampleSerialTest\SampleSerialTest\obj\x86\Release\SampleSerialTest.csprojResolveAssemblyReference.cache
